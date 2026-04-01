@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB &#8211; Find your perfect place</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <a href="index.html" aria-label="HBnB home">
+                <img src="logo.png" alt="HBnB" class="logo"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='inline';">
+                <span class="logo-fallback" style="display:none;">HBnB</span>
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="admin.html" id="admin-link" style="display:none;">Admin Panel</a>
+                <a href="login.html" id="login-link" class="login-button">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="filters" aria-label="Filter places">
+            <label for="price-filter">Max price per night:</label>
+            <select id="price-filter" aria-label="Filter by maximum price per night">
+                <option value="10">Up to $10</option>
+                <option value="50">Up to $50</option>
+                <option value="100">Up to $100</option>
+                <option value="all">All prices</option>
+            </select>
+        </section>
+
+        <section id="places-list" class="places-grid" aria-label="Available places">
+            <div class="loading">Loading places</div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 <strong>HBnB</strong>. All rights reserved.</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

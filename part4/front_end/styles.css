@@ -1,0 +1,1235 @@
+/* ============================================================
+   HBnB Frontend Styles
+   ============================================================ */
+
+/* Reset & Base */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary:       #FF385C;
+    --primary-dark:  #E31C5F;
+    --text-dark:     #222222;
+    --text-medium:   #484848;
+    --text-light:    #717171;
+    --bg:            #F7F7F7;
+    --white:         #FFFFFF;
+    --border:        #DDDDDD;
+    --shadow:        0 2px 12px rgba(0, 0, 0, 0.08);
+    --shadow-hover:  0 6px 24px rgba(0, 0, 0, 0.14);
+    --radius:        10px;
+    --radius-lg:     16px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                 Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    height: 38px;
+    width: auto;
+    /* Text fallback when logo.png is missing */
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -1px;
+}
+
+.logo-fallback {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -1px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+nav a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-dark);
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
+.login-button {
+    background: var(--primary) !important;
+    color: var(--white) !important;
+    padding: 8px 20px;
+    border-radius: 22px;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    transition: background 0.2s, transform 0.1s !important;
+}
+
+.login-button:hover {
+    background: var(--primary-dark) !important;
+    transform: scale(1.04);
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+
+main {
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 24px;
+    width: 100%;
+}
+
+/* ============================================================
+   FILTERS BAR
+   ============================================================ */
+
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding: 14px 20px;
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.filters label {
+    font-weight: 600;
+    color: var(--text-medium);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.filters select {
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text-dark);
+    background: var(--white);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+    min-width: 160px;
+}
+
+.filters select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.12);
+}
+
+/* ============================================================
+   PLACES GRID
+   ============================================================ */
+
+.places-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 8px;
+}
+
+/* ============================================================
+   PLACE CARD
+   ============================================================ */
+
+.place-card {
+    background: var(--white);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px;
+    box-shadow: var(--shadow);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.place-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.place-card-img {
+    width: 100%;
+    height: 190px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #FFE4E8 0%, #FFCDD5 50%, #FFB3C1 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.place-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.place-card .price {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 16px;
+    flex: 1;
+}
+
+.place-card .price strong {
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.details-button {
+    display: block;
+    background: var(--primary);
+    color: var(--white);
+    padding: 10px 0;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    transition: background 0.2s, transform 0.1s;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    width: 100%;
+    margin-top: auto;
+}
+
+.details-button:hover {
+    background: var(--primary-dark);
+    transform: scale(1.02);
+    color: var(--white);
+}
+
+/* ============================================================
+   AUTH / FORMS CONTAINER
+   ============================================================ */
+
+.auth-container {
+    max-width: 440px;
+    margin: 56px auto;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 44px 40px;
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.12);
+}
+
+.auth-container h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.subtitle {
+    color: var(--text-light);
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-medium);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+    background: var(--white);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.12);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    font-family: inherit;
+    margin-top: 4px;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: scale(1.01);
+}
+
+.btn-primary:active {
+    transform: scale(0.99);
+}
+
+/* ============================================================
+   MESSAGES (ERROR / SUCCESS)
+   ============================================================ */
+
+.error-message {
+    font-size: 14px;
+    text-align: center;
+    margin-top: 14px;
+    padding: 11px 16px;
+    border-radius: 8px;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.error-message.error {
+    color: var(--primary);
+    background: rgba(255, 56, 92, 0.08);
+    border: 1px solid rgba(255, 56, 92, 0.2);
+}
+
+.error-message.success {
+    color: #00875A;
+    background: rgba(0, 135, 90, 0.08);
+    border: 1px solid rgba(0, 135, 90, 0.2);
+}
+
+/* ============================================================
+   PLACE DETAILS PAGE
+   ============================================================ */
+
+.place-details {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-bottom: 36px;
+}
+
+.place-hero {
+    background: linear-gradient(135deg, #FF385C 0%, #FF6B8A 100%);
+    padding: 52px 44px;
+    color: var(--white);
+}
+
+.place-hero h1 {
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    line-height: 1.2;
+}
+
+.place-meta {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    font-size: 15px;
+    opacity: 0.9;
+}
+
+.price-tag {
+    font-size: 20px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.22);
+    padding: 6px 18px;
+    border-radius: 22px;
+    backdrop-filter: blur(4px);
+}
+
+.place-info {
+    padding: 36px 44px;
+}
+
+.place-info h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--bg);
+}
+
+.place-description {
+    color: var(--text-medium);
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 28px;
+}
+
+.host-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 32px;
+    padding: 20px;
+    background: var(--bg);
+    border-radius: 12px;
+}
+
+.host-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.host-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 2px;
+}
+
+.host-info p {
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.amenities-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.amenity-tag {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 6px 16px;
+    border-radius: 22px;
+    font-size: 13px;
+    color: var(--text-medium);
+    font-weight: 500;
+}
+
+/* ============================================================
+   REVIEWS SECTION
+   ============================================================ */
+
+.reviews-section {
+    margin-bottom: 32px;
+}
+
+.reviews-section > h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.review-card {
+    background: var(--white);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px;
+    margin-left: 0;
+    box-shadow: var(--shadow);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.reviewer-name {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 15px;
+}
+
+.review-stars {
+    color: #FFB400;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.review-text {
+    color: var(--text-medium);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.no-reviews {
+    color: var(--text-light);
+    font-style: italic;
+    padding: 20px 0;
+}
+
+/* ============================================================
+   ADD REVIEW SECTION (on place.html and add_review.html)
+   ============================================================ */
+
+.add-review {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 36px;
+    box-shadow: var(--shadow);
+    margin-bottom: 32px;
+}
+
+.add-review h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 28px;
+}
+
+/* ============================================================
+   LOADING & EMPTY STATES
+   ============================================================ */
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading {
+    text-align: center;
+    padding: 72px 24px;
+    color: var(--text-light);
+    font-size: 16px;
+    grid-column: 1 / -1;
+}
+
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 72px 24px;
+    color: var(--text-light);
+    grid-column: 1 / -1;
+}
+
+.empty-state h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-medium);
+}
+
+.empty-state p {
+    font-size: 14px;
+}
+
+.empty-state a {
+    color: var(--primary);
+    font-weight: 500;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+footer {
+    background: var(--text-dark);
+    color: rgba(255, 255, 255, 0.65);
+    text-align: center;
+    padding: 26px 24px;
+    font-size: 14px;
+    margin-top: auto;
+}
+
+footer strong {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* ============================================================
+   RESPONSIVE
+   Breakpoints:
+     xl  : 1200px+       (large desktops)
+     lg  : 1024px–1199px (laptops / small desktops)
+     md  : 768px–1023px  (tablets landscape + portrait)
+     sm  : 480px–767px   (large phones / phablets)
+     xs  : < 480px       (phones)
+   ============================================================ */
+
+/* --- Global overflow protection ----------------------------- */
+body {
+    overflow-x: hidden;
+}
+
+img, video, iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Prevent text overflow on any screen */
+h1, h2, h3, h4, p, span, a, label, li {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Minimum touch target size for interactive elements */
+.details-button,
+.btn-primary {
+    min-height: 44px;
+}
+
+.login-button {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* ---- Large desktops (1200px+) ------------------------------ */
+/* Already covered by base styles (max-width: 1200px container) */
+
+/* ---- Laptops (1024px – 1199px) ----------------------------- */
+@media (max-width: 1199px) {
+    .places-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+}
+
+/* ---- Tablets landscape + small laptops (768px – 1023px) ---- */
+@media (max-width: 1023px) {
+    .header-container {
+        padding: 0 20px;
+    }
+
+    main {
+        padding: 24px 20px;
+    }
+
+    .places-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4px;
+    }
+
+    .place-hero {
+        padding: 44px 36px;
+    }
+
+    .place-info {
+        padding: 32px 36px;
+    }
+
+    .add-review {
+        padding: 32px;
+    }
+}
+
+/* ---- Tablets portrait (640px – 767px) ---------------------- */
+@media (max-width: 767px) {
+    /* Header */
+    .header-container {
+        padding: 0 16px;
+        height: 58px;
+    }
+
+    .logo {
+        height: 32px;
+    }
+
+    nav {
+        gap: 12px;
+    }
+
+    nav a:not(.login-button) {
+        font-size: 13px;
+    }
+
+    /* Main layout */
+    main {
+        padding: 20px 16px;
+    }
+
+    /* Filter bar stacks vertically */
+    .filters {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 14px 16px;
+    }
+
+    .filters select {
+        width: 100%;
+        min-width: unset;
+    }
+
+    /* Cards: 2 columns on tablet portrait */
+    .places-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0;
+    }
+
+    .place-card {
+        margin: 8px;
+    }
+
+    /* Place details */
+    .place-hero {
+        padding: 32px 24px;
+    }
+
+    .place-hero h1 {
+        font-size: 28px;
+    }
+
+    .place-info {
+        padding: 24px;
+    }
+
+    .place-info h2 {
+        font-size: 18px;
+    }
+
+    /* Reviews */
+    .review-card {
+        margin: 10px 0;
+    }
+
+    .reviews-section > h2 {
+        font-size: 20px;
+    }
+
+    /* Add review */
+    .add-review {
+        padding: 24px;
+    }
+
+    .add-review h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    /* Auth forms */
+    .auth-container {
+        margin: 32px 16px;
+        padding: 32px 24px;
+    }
+}
+
+/* ---- Large phones / phablets (480px – 639px) --------------- */
+@media (max-width: 639px) {
+    /* Prevent iOS from zooming on input focus (font-size must be ≥ 16px) */
+    .form-group input,
+    .form-group textarea,
+    .form-group select,
+    .filters select {
+        font-size: 16px;
+    }
+
+    /* Single column grid */
+    .places-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .place-card {
+        margin: 8px 0;
+    }
+
+    /* Meta info wraps */
+    .place-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .price-tag {
+        font-size: 17px;
+    }
+}
+
+/* ---- Small phones (< 480px) -------------------------------- */
+@media (max-width: 479px) {
+    /* Header: hide "Home" link to save space, keep logo + login */
+    nav a:not(.login-button) {
+        display: none;
+    }
+
+    .login-button {
+        padding: 8px 14px;
+    }
+
+    /* Main */
+    main {
+        padding: 16px 12px;
+    }
+
+    /* Filter bar */
+    .filters {
+        padding: 12px;
+        margin-bottom: 20px;
+    }
+
+    .filters label {
+        font-size: 13px;
+    }
+
+    /* Cards */
+    .place-card {
+        margin: 6px 0;
+    }
+
+    .place-card-img {
+        height: 160px;
+        font-size: 44px;
+    }
+
+    .place-card h3 {
+        font-size: 15px;
+    }
+
+    /* Place hero */
+    .place-hero {
+        padding: 24px 16px;
+    }
+
+    .place-hero h1 {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .meta-item {
+        font-size: 13px;
+    }
+
+    .price-tag {
+        font-size: 15px;
+        padding: 5px 14px;
+    }
+
+    /* Place info */
+    .place-info {
+        padding: 18px 16px;
+    }
+
+    .place-info h2 {
+        font-size: 17px;
+    }
+
+    .host-info {
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .host-avatar {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+    /* Reviews */
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .review-stars {
+        font-size: 15px;
+    }
+
+    .reviews-section > h2 {
+        font-size: 18px;
+    }
+
+    /* Add review */
+    .add-review {
+        padding: 18px 16px;
+        border-radius: var(--radius);
+    }
+
+    .add-review h2 {
+        font-size: 18px;
+        margin-bottom: 16px;
+    }
+
+    /* Auth forms: full-width, minimal margin */
+    .auth-container {
+        margin: 16px 12px;
+        padding: 24px 18px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+    }
+
+    .auth-container h1 {
+        font-size: 22px;
+    }
+
+    .btn-primary {
+        font-size: 15px;
+        padding: 13px;
+    }
+
+    /* Footer */
+    footer {
+        padding: 20px 16px;
+        font-size: 13px;
+    }
+}
+
+/* ============================================================
+   ADMIN DASHBOARD
+   ============================================================ */
+
+.admin-header {
+    margin-bottom: 32px;
+}
+
+.admin-header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.admin-header p {
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.admin-section {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow);
+    margin-bottom: 32px;
+}
+
+.admin-section h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 22px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--bg);
+}
+
+/* Admin form (compact, inside a section) */
+.admin-form .form-group {
+    margin-bottom: 14px;
+}
+
+.admin-form .form-group label {
+    font-size: 11px;
+    margin-bottom: 4px;
+}
+
+.admin-form .form-group input,
+.admin-form .form-group select {
+    padding: 9px 12px;
+    font-size: 14px;
+}
+
+.admin-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Tables */
+.admin-table-wrapper {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 10px;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+}
+
+.admin-table td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--bg);
+    font-size: 13px;
+    color: var(--text-medium);
+    vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover td {
+    background: var(--bg);
+}
+
+/* Inline edit row */
+.edit-row td {
+    background: #FFF8F9 !important;
+}
+
+.edit-row input {
+    width: 100%;
+    padding: 5px 9px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    min-width: 80px;
+}
+
+.edit-row input:focus {
+    border-color: var(--primary);
+}
+
+/* Small action buttons */
+.btn-sm {
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: opacity 0.2s, transform 0.1s;
+    min-height: 30px;
+    white-space: nowrap;
+}
+
+.btn-sm:hover {
+    opacity: 0.82;
+}
+
+.btn-sm:active {
+    transform: scale(0.97);
+}
+
+.btn-edit {
+    background: #EBF5FF;
+    color: #0069BF;
+}
+
+.btn-save {
+    background: #E6F7F0;
+    color: #00875A;
+}
+
+.btn-cancel {
+    background: var(--bg);
+    color: var(--text-medium);
+}
+
+.btn-delete {
+    background: rgba(255, 56, 92, 0.1);
+    color: var(--primary);
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.badge-admin {
+    background: rgba(255, 56, 92, 0.1);
+    color: var(--primary);
+}
+
+.badge-user {
+    background: rgba(0, 135, 90, 0.1);
+    color: #00875A;
+}
+
+/* Danger button (used on place.html for admin delete) */
+.btn-danger {
+    background: var(--primary);
+    color: var(--white);
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+    min-height: 40px;
+}
+
+.btn-danger:hover {
+    background: var(--primary-dark);
+}
+
+/* Admin controls bar on place.html */
+.admin-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 16px 44px;
+    background: rgba(255, 56, 92, 0.04);
+    border-top: 1px solid rgba(255, 56, 92, 0.12);
+}
+
+/* Admin nav link badge in header */
+#admin-link {
+    background: rgba(255, 56, 92, 0.1);
+    color: var(--primary) !important;
+    padding: 5px 14px;
+    border-radius: 22px;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+#admin-link:hover {
+    background: var(--primary);
+    color: var(--white) !important;
+}
+
+/* Responsive admin */
+@media (max-width: 1023px) {
+    .admin-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .admin-section {
+        padding: 20px 16px;
+    }
+
+    .admin-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-controls {
+        padding: 14px 16px;
+    }
+}
+
+@media (max-width: 479px) {
+    .admin-header h1 {
+        font-size: 22px;
+    }
+}

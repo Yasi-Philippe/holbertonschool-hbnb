@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB &#8211; Place Details</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <a href="index.html" aria-label="HBnB home">
+                <img src="logo.png" alt="HBnB" class="logo"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='inline';">
+                <span class="logo-fallback" style="display:none;">HBnB</span>
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="admin.html" id="admin-link" style="display:none;">Admin Panel</a>
+                <a href="login.html" id="login-link" class="login-button">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Place information populated by scripts.js -->
+        <section id="place-details" class="place-details" aria-label="Place information">
+            <div class="loading">Loading place details</div>
+        </section>
+
+        <!-- Reviews list populated by scripts.js -->
+        <section class="reviews-section" aria-label="Guest reviews">
+            <h2>Guest Reviews</h2>
+            <div id="reviews-list"></div>
+        </section>
+
+        <!-- Add review form – visible only to authenticated users -->
+        <section id="add-review" class="add-review" style="display: none;" aria-label="Write a review">
+            <h2>Share your experience</h2>
+            <form id="review-form" novalidate>
+                <div class="form-group">
+                    <label for="review-text">Your review</label>
+                    <textarea
+                        id="review-text"
+                        name="review-text"
+                        placeholder="Tell others what you think about this place&#8230;"
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="rating">Rating</label>
+                    <select id="rating" name="rating" required>
+                        <option value="">Select a rating</option>
+                        <option value="5">&#11088;&#11088;&#11088;&#11088;&#11088; Excellent (5)</option>
+                        <option value="4">&#11088;&#11088;&#11088;&#11088; Very Good (4)</option>
+                        <option value="3">&#11088;&#11088;&#11088; Good (3)</option>
+                        <option value="2">&#11088;&#11088; Fair (2)</option>
+                        <option value="1">&#11088; Poor (1)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary">Submit Review</button>
+                <p id="review-message" class="error-message" role="alert"></p>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 <strong>HBnB</strong>. All rights reserved.</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
