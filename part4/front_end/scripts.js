@@ -2,6 +2,34 @@
 
 const API_URL = 'http://127.0.0.1:5000';
 
+/* ---- Place image map (title → filename) ------------------- */
+const PLACE_IMAGES = {
+    'Country House':                    'place_default.jpg',
+    'Cosy Apartment':                   'place_appartement.jpg',
+    'Modern Studio':                    'place_studio.jpg',
+    'Lavender Provençal Villa':         'Villa Provençale en lavande.jpg',
+    'Snowy Alpine Chalet':              'alpine chalet snow mountains.jpg',
+    'Parisian Industrial Loft':         'paris industrial loft brick.jpg',
+    'Forest Treehouse':                 'treehouse forest france.jpg',
+    'Parisian Haussmann Suite':         'haussmann apartment paris moldings.jpg',
+    'Renovated Normandy Farmhouse':     'normandy farmhouse renovated.png',
+    'Mediterranean Seafront Villa':     'mediterranean seaside villa infinity pool.jpg',
+    'Parisian Houseboat':               'paris houseboat seine river.jpg',
+    'Bordeaux Bastide Estate':          'bordeaux bastide vineyard.jpg',
+    'Garrigue Stone Cottage':           'provence stone house garrigue.jpg',
+    'Corsican Mountain Cottage':        'corsica mountain farmhouse.jpg',
+    'Cosy Lyon Studio':                 'lyon old town studio apartment.jpg',
+    'Breton Manor with Sea View':       'brittany granite manor sea view.jpg',
+    'Nice Belle Époque Apartment':      'nice belle epoque balcony sea.jpg',
+    "Brittany Fisherman's Cottage":     'saint-malo fisherman house.jpg',
+    'Tuscan Olive Grove Villa':         'tuscany villa olive trees pool.jpg',
+    'Marrakech Riad':                   'marrakech riad courtyard fountain.jpg',
+    'Forest Tiny House':                'tiny house forest france.jpg',
+    'New York Style Loft':              'new york loft style terrace.jpg',
+    'Luxury Arctic Igloo':              'arctic luxury igloo northern lights.jpg',
+    'Castle':                           'castle.jpg',
+};
+
 /* ============================================================
    UTILITIES
    ============================================================ */
@@ -97,7 +125,9 @@ function updateNavLinks() {
     const logoutLink = document.getElementById('logout-link');
     const adminLink  = document.getElementById('admin-link');
 
+    const addPlaceLink = document.getElementById('add-place-link');
     if (loginLink)  loginLink.style.display  = token ? 'none'  : '';
+    if (addPlaceLink) addPlaceLink.style.display = token ? 'inline-flex' : 'none';
     if (logoutLink) {
         logoutLink.style.display = token ? 'flex' : 'none';
         logoutLink.addEventListener('click', (e) => {
@@ -168,6 +198,97 @@ function setupIndexPage() {
     updateNavLinks();
     fetchPlaces(token);
     setupPriceFilter();
+    setupHeroSlideshow();
+    setupHeroFade();
+    setupScrollFadeIn();
+    setupHeroScrollArrow();
+}
+
+function setupHeroScrollArrow() {
+    const btn = document.getElementById('hero-scroll-btn');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+        const target = document.getElementById('places-list');
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+}
+
+function setupHeroSlideshow() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    /* Build shuffled list of images from the shared map */
+    const images = Object.values(PLACE_IMAGES).filter(Boolean);
+    for (let i = images.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [images[i], images[j]] = [images[j], images[i]];
+    }
+
+    const slider = document.createElement('div');
+    slider.className = 'hero-bg-slider';
+    slider.setAttribute('aria-hidden', 'true');
+
+    const imgEls = images.map(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.className = 'hero-bg-img';
+        img.alt = '';
+        slider.appendChild(img);
+        return img;
+    });
+
+    /* Insert as very first child so it sits behind everything */
+    hero.insertBefore(slider, hero.firstChild);
+
+    let current = 0;
+    imgEls[0].classList.add('active');
+
+    setInterval(() => {
+        imgEls[current].classList.remove('active');
+        current = (current + 1) % imgEls.length;
+        imgEls[current].classList.add('active');
+    }, 6000);
+}
+
+function setupHeroFade() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    window.addEventListener('scroll', () => {
+        const heroH  = hero.offsetHeight;
+        const scrollY = window.scrollY;
+        const opacity = Math.max(0, 1 - (scrollY / (heroH * 0.65)));
+        hero.style.opacity = opacity;
+    }, { passive: true });
+}
+
+/* Shared IntersectionObserver — created once, reused for dynamic cards */
+let _scrollObserver = null;
+
+function getScrollObserver() {
+    if (_scrollObserver) return _scrollObserver;
+    _scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            } else {
+                entry.target.classList.remove('visible');
+            }
+        });
+    }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+    return _scrollObserver;
+}
+
+function watchScrollFade(el) {
+    el.classList.add('scroll-fade');
+    getScrollObserver().observe(el);
+}
+
+function setupScrollFadeIn() {
+    /* Static page elements — cards are added dynamically via watchScrollFade */
+    document.querySelectorAll(
+        '.filters, .place-details, .reviews-section, .add-review, ' +
+        '.auth-container, .admin-section, .admin-header'
+    ).forEach(el => watchScrollFade(el));
 }
 
 async function fetchPlaces(token) {
@@ -209,12 +330,6 @@ function displayPlaces(places) {
 
     list.innerHTML = '';
 
-    const imageMap = {
-        'Maison de campagne': 'place_default.jpg',
-        'Appartement cosy':   'place_appartement.jpg',
-        'Studio moderne':     'place_studio.jpg'
-    };
-
     // Group into shelf rows of 3
     const ROW_SIZE = 3;
     for (let i = 0; i < places.length; i += ROW_SIZE) {
@@ -235,7 +350,7 @@ function displayPlaces(places) {
                 ? `<strong>$${Number(place.price).toFixed(2)}</strong> / night`
                 : 'Price unavailable';
 
-            const imgSrc  = imageMap[place.title];
+            const imgSrc  = PLACE_IMAGES[place.title];
             const imgHtml = imgSrc
                 ? `<img src="${imgSrc}" alt="${escapeHtml(place.title)}">`
                 : '🏠';
@@ -249,6 +364,7 @@ function displayPlaces(places) {
             `;
 
             cardsWrapper.appendChild(card);
+            watchScrollFade(card);
         });
 
         shelfRow.appendChild(cardsWrapper);
@@ -267,7 +383,8 @@ function setupPriceFilter() {
             let anyVisible = false;
             row.querySelectorAll('.place-card').forEach(card => {
                 const price   = parseFloat(card.dataset.price) || 0;
-                const visible = (value === 'all') || (price <= parseFloat(value));
+                const visible = (value === 'all')
+                || (value === '100plus' ? price > 100 : price <= parseFloat(value));
                 card.style.display = visible ? '' : 'none';
                 if (visible) anyVisible = true;
             });
@@ -284,6 +401,7 @@ function setupPriceFilter() {
 function setupPlacePage() {
     const token = getCookie('token');
     updateNavLinks();
+    setupScrollFadeIn();
     const addReviewSection = document.getElementById('add-review');
 
     const placeId = getPlaceIdFromURL();
@@ -297,9 +415,48 @@ function setupPlacePage() {
     }
 
     fetchPlaceDetails(token, placeId);
+    loadSuggestions(placeId);
 
     if (token) {
         setupPlaceReviewForm(token, placeId);
+    }
+}
+
+async function loadSuggestions(currentPlaceId) {
+    const container = document.getElementById('suggestions-list');
+    if (!container) return;
+
+    try {
+        const res = await fetch(`${API_URL}/api/v1/places/`);
+        if (!res.ok) { container.innerHTML = ''; return; }
+
+        const places = await res.json();
+        const others = places.filter(p => p.id !== currentPlaceId).slice(0, 4);
+
+        if (!others.length) {
+            container.innerHTML = '<p style="color:var(--text-light);font-size:13px;font-weight:300;">No other places available.</p>';
+            return;
+        }
+
+        container.innerHTML = others.map(p => {
+            const imgSrc  = PLACE_IMAGES[p.title];
+            const imgHtml = imgSrc
+                ? `<img src="${imgSrc}" alt="${escapeHtml(p.title)}">`
+                : '🏠';
+            const price = p.price !== undefined
+                ? `$${Number(p.price).toFixed(2)} / night`
+                : 'Price unavailable';
+            return `
+                <a href="place.html?id=${encodeURIComponent(p.id)}" class="suggestion-card">
+                    <div class="suggestion-img">${imgHtml}</div>
+                    <div class="suggestion-info">
+                        <p class="suggestion-title">${escapeHtml(p.title)}</p>
+                        <p class="suggestion-price">${price}</p>
+                    </div>
+                </a>`;
+        }).join('');
+    } catch (_) {
+        container.innerHTML = '';
     }
 }
 
@@ -353,12 +510,7 @@ function displayPlaceDetails(place, token, admin) {
         ? `${Number(place.latitude).toFixed(4)}, ${Number(place.longitude).toFixed(4)}`
         : 'Location unavailable';
 
-    const detailImageMap = {
-        'Maison de campagne': 'place_default.jpg',
-        'Appartement cosy':   'place_appartement.jpg',
-        'Studio moderne':     'place_studio.jpg'
-    };
-    const detailImg = detailImageMap[place.title];
+    const detailImg = PLACE_IMAGES[place.title];
     const detailImgHtml = detailImg
         ? `<div class="place-detail-image"><img src="${detailImg}" alt="${escapeHtml(place.title)}"></div>`
         : '';
@@ -605,12 +757,14 @@ function setupAdminPage() {
     }
 
     updateNavLinks();
+    setupScrollFadeIn();
 
     loadUsersSection(token);
     loadAmenitiesSection(token);
     loadPlacesAdminSection(token);
     setupCreateUserForm(token);
     setupCreateAmenityForm(token);
+    setupCreatePlaceForm(token);
 }
 
 /* ---- Users ------------------------------------------------- */
@@ -819,29 +973,33 @@ function setupCreateAmenityForm(token) {
 async function loadPlacesAdminSection(token) {
     const tbody = document.getElementById('places-admin-tbody');
     if (!tbody) return;
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-light);">Loading…</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-light);">Loading…</td></tr>';
     try {
-        const res = await fetch(`${API_URL}/api/v1/places/`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!res.ok) throw new Error();
-        const places = await res.json();
-        renderPlacesAdminTable(places, token, tbody);
+        const [placesRes, usersRes] = await Promise.all([
+            fetch(`${API_URL}/api/v1/places/`, { headers: { 'Authorization': `Bearer ${token}` } }),
+            fetch(`${API_URL}/api/v1/users/`,  { headers: { 'Authorization': `Bearer ${token}` } })
+        ]);
+        if (!placesRes.ok) throw new Error();
+        const places = await placesRes.json();
+        const users  = usersRes.ok ? await usersRes.json() : [];
+        const userMap = {};
+        users.forEach(u => { userMap[u.id] = `${u.first_name} ${u.last_name}`.trim(); });
+        renderPlacesAdminTable(places, token, tbody, userMap);
     } catch (_) {
         tbody.innerHTML = '<tr><td colspan="4" style="color:var(--primary);">Failed to load places.</td></tr>';
     }
 }
 
-function renderPlacesAdminTable(places, token, tbody) {
+function renderPlacesAdminTable(places, token, tbody, userMap = {}) {
     if (!places.length) {
         tbody.innerHTML = '<tr><td colspan="4" style="color:var(--text-light);">No places found.</td></tr>';
         return;
     }
     tbody.innerHTML = places.map(p => `
         <tr id="place-admin-row-${escapeHtml(p.id)}">
-            <td><a href="place.html?id=${encodeURIComponent(p.id)}" style="color:var(--primary);font-weight:600;">${escapeHtml(p.title)}</a></td>
+            <td><a href="place.html?id=${encodeURIComponent(p.id)}" style="color:var(--primary-light);font-weight:600;">${escapeHtml(p.title)}</a></td>
             <td>${p.price !== undefined ? '$' + Number(p.price).toFixed(2) : '—'}</td>
-            <td>${escapeHtml(p.owner_id)}</td>
+            <td style="color:var(--text-bright);font-weight:500;">${escapeHtml(userMap[p.owner_id] || '—')}</td>
             <td>
                 <button class="btn-sm btn-delete" onclick="adminDeletePlace('${escapeHtml(p.id)}')">🗑 Delete</button>
             </td>
@@ -869,6 +1027,94 @@ async function adminDeletePlace(placeId) {
 }
 
 /* ============================================================
+   CREATE PLACE PAGE  (create_place.html)
+   ============================================================ */
+
+function setupCreatePlacePage() {
+    const token = checkAuthAndRedirect();
+    if (!token) return;
+    updateNavLinks();
+    setupScrollFadeIn();
+
+    const form  = document.getElementById('create-place-form');
+    const msgEl = document.getElementById('place-message');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('place-title').value.trim();
+        const desc  = document.getElementById('place-description').value.trim();
+        const price = parseFloat(document.getElementById('place-price').value);
+        const lat   = parseFloat(document.getElementById('place-lat').value);
+        const lng   = parseFloat(document.getElementById('place-lng').value);
+
+        if (!title || isNaN(price) || isNaN(lat) || isNaN(lng)) {
+            showMessage(msgEl, 'Title, price, latitude and longitude are required.', 'error');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_URL}/api/v1/places/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ title, description: desc, price, latitude: lat, longitude: lng, amenities: [] })
+            });
+            const d = await res.json().catch(() => ({}));
+            if (res.ok) {
+                showMessage(msgEl, 'Place published! Redirecting to your listing…', 'success');
+                form.reset();
+                setTimeout(() => {
+                    window.location.href = `place.html?id=${encodeURIComponent(d.id)}`;
+                }, 1400);
+            } else {
+                showMessage(msgEl, d.error || 'Failed to create place.', 'error');
+            }
+        } catch (_) {
+            showMessage(msgEl, 'Connection error. Please try again.', 'error');
+        }
+    });
+}
+
+/* ---- Admin: create place form (admin panel) --------------- */
+function setupCreatePlaceForm(token) {
+    const form  = document.getElementById('create-place-form');
+    const msgEl = document.getElementById('create-place-msg');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title  = document.getElementById('new-place-title').value.trim();
+        const desc   = document.getElementById('new-place-desc').value.trim();
+        const price  = parseFloat(document.getElementById('new-place-price').value);
+        const lat    = parseFloat(document.getElementById('new-place-lat').value);
+        const lng    = parseFloat(document.getElementById('new-place-lng').value);
+
+        if (!title || isNaN(price) || isNaN(lat) || isNaN(lng)) {
+            showMessage(msgEl, 'Title, price, latitude and longitude are required.', 'error');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_URL}/api/v1/places/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ title, description: desc, price, latitude: lat, longitude: lng, amenities: [] })
+            });
+            const d = await res.json().catch(() => ({}));
+            if (res.ok) {
+                showMessage(msgEl, 'Place created successfully!', 'success');
+                form.reset();
+                loadPlacesAdminSection(token);
+            } else {
+                showMessage(msgEl, d.error || 'Failed to create place.', 'error');
+            }
+        } catch (_) {
+            showMessage(msgEl, 'Connection error.', 'error');
+        }
+    });
+}
+
+/* ============================================================
    PAGE ROUTER  –  auto-detect the current page and bootstrap
    ============================================================ */
 
@@ -881,6 +1127,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setupAdminPage();
     } else if (path.includes('add_review.html')) {
         setupAddReviewPage();
+    } else if (path.includes('create_place.html')) {
+        setupCreatePlacePage();
     } else if (path.includes('place.html')) {
         setupPlacePage();
     } else {

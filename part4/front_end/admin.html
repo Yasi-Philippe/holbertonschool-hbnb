@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBnB &#8211; Admin Panel</title>
     <link rel="icon" href="icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -19,6 +22,7 @@
             <nav>
                 <a href="index.html">Home</a>
                 <a href="admin.html" id="admin-link">Admin Panel</a>
+                <a href="create_place.html" id="add-place-link" class="add-place-button">✦ Add my place</a>
                 <a href="login.html" id="login-link" class="login-button">Login</a>
                 <a href="#" id="logout-link" class="logout-button" style="display:none;">Logout</a>
             </nav>
@@ -115,22 +119,54 @@
             </div>
 
             <!-- Place Management -->
-            <div class="admin-section">
-                <h2>All Places</h2>
-                <div class="admin-table-wrapper">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Price / night</th>
-                                <th>Owner ID</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="places-admin-tbody">
-                            <tr><td colspan="4" style="text-align:center;color:var(--text-light);">Loading&#8230;</td></tr>
-                        </tbody>
-                    </table>
+            <div class="admin-grid">
+                <div class="admin-section">
+                    <h2>Create New Place</h2>
+                    <form id="create-place-form" class="admin-form" novalidate>
+                        <div class="form-group">
+                            <label for="new-place-title">Title</label>
+                            <input type="text" id="new-place-title" placeholder="e.g. Cosy mountain cabin" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-place-desc">Description</label>
+                            <input type="text" id="new-place-desc" placeholder="Short description">
+                        </div>
+                        <div class="admin-form-row">
+                            <div class="form-group">
+                                <label for="new-place-price">Price / night ($)</label>
+                                <input type="number" id="new-place-price" placeholder="e.g. 75" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-place-lat">Latitude</label>
+                                <input type="number" id="new-place-lat" placeholder="e.g. 48.8566" step="any" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-place-lng">Longitude</label>
+                            <input type="number" id="new-place-lng" placeholder="e.g. 2.3522" step="any" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Create Place</button>
+                        <p id="create-place-msg" class="error-message" role="alert"></p>
+                    </form>
+                </div>
+
+                <div class="admin-section">
+                    <h2>All Places</h2>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Price / night</th>
+                                    <th>Owner</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="places-admin-tbody">
+                                <tr><td colspan="4" style="text-align:center;color:var(--text-light);">Loading&#8230;</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
