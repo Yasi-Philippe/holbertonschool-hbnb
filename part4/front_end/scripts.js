@@ -88,12 +88,29 @@ function isAdminUser() {
 }
 
 /**
- * Show or hide the #admin-link nav element based on admin status.
+ * Update all nav links (login / logout / admin) based on auth state.
+ * Call once at the start of every page setup function.
  */
-function updateNavAdminLink() {
-    const link = document.getElementById('admin-link');
-    if (link) link.style.display = isAdminUser() ? 'flex' : 'none';
+function updateNavLinks() {
+    const token      = getCookie('token');
+    const loginLink  = document.getElementById('login-link');
+    const logoutLink = document.getElementById('logout-link');
+    const adminLink  = document.getElementById('admin-link');
+
+    if (loginLink)  loginLink.style.display  = token ? 'none'  : '';
+    if (logoutLink) {
+        logoutLink.style.display = token ? 'flex' : 'none';
+        logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+            window.location.href = 'index.html';
+        });
+    }
+    if (adminLink)  adminLink.style.display  = isAdminUser() ? 'flex' : 'none';
 }
+
+/** @deprecated use updateNavLinks() */
+function updateNavAdminLink() { updateNavLinks(); }
 
 /* ============================================================
    LOGIN PAGE  (login.html)
@@ -147,14 +164,8 @@ async function loginUser(email, password) {
    ============================================================ */
 
 function setupIndexPage() {
-    const token     = getCookie('token');
-    const loginLink = document.getElementById('login-link');
-
-    if (loginLink) {
-        loginLink.style.display = token ? 'none' : 'block';
-    }
-
-    updateNavAdminLink();
+    const token = getCookie('token');
+    updateNavLinks();
     fetchPlaces(token);
     setupPriceFilter();
 }
@@ -240,12 +251,9 @@ function setupPriceFilter() {
    ============================================================ */
 
 function setupPlacePage() {
-    const token     = getCookie('token');
-    const loginLink = document.getElementById('login-link');
+    const token = getCookie('token');
+    updateNavLinks();
     const addReviewSection = document.getElementById('add-review');
-
-    if (loginLink) loginLink.style.display = token ? 'none' : 'block';
-    updateNavAdminLink();
 
     const placeId = getPlaceIdFromURL();
     if (!placeId) {
@@ -554,7 +562,7 @@ function setupAdminPage() {
         return;
     }
 
-    updateNavAdminLink();
+    updateNavLinks();
 
     loadUsersSection(token);
     loadAmenitiesSection(token);

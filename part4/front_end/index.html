@@ -20,6 +20,7 @@
                 <a href="index.html">Home</a>
                 <a href="admin.html" id="admin-link" style="display:none;">Admin Panel</a>
                 <a href="login.html" id="login-link" class="login-button">Login</a>
+                <a href="#" id="logout-link" class="logout-button" style="display:none;">Logout</a>
             </nav>
         </div>
     </header>
@@ -28,10 +29,10 @@
         <section class="filters" aria-label="Filter places">
             <label for="price-filter">Max price per night:</label>
             <select id="price-filter" aria-label="Filter by maximum price per night">
+                <option value="all" selected>All prices</option>
                 <option value="10">Up to $10</option>
                 <option value="50">Up to $50</option>
                 <option value="100">Up to $100</option>
-                <option value="all">All prices</option>
             </select>
         </section>
 
@@ -41,7 +42,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 <strong>HBnB</strong>. All rights reserved.</p>
+        <p>&copy; 2026 <strong>HBnB</strong>. All rights reserved.</p>
     </footer>
 
     <script src="scripts.js"></script>

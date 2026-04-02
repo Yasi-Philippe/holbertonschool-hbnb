@@ -10,16 +10,21 @@
 }
 
 :root {
-    --primary:       #FF385C;
-    --primary-dark:  #E31C5F;
-    --text-dark:     #222222;
-    --text-medium:   #484848;
-    --text-light:    #717171;
-    --bg:            #F7F7F7;
+    /* Brand — holiday sky blue */
+    --primary:       #0EA5E9;
+    --primary-dark:  #0284C7;
+    /* Danger — softer red, used only for delete/error */
+    --danger:        #E05252;
+    --danger-dark:   #C73E3E;
+
+    --text-dark:     #2A2A2A;
+    --text-medium:   #515151;
+    --text-light:    #888888;
+    --bg:            #FFF9F4;   /* warm sandy cream */
     --white:         #FFFFFF;
-    --border:        #DDDDDD;
-    --shadow:        0 2px 12px rgba(0, 0, 0, 0.08);
-    --shadow-hover:  0 6px 24px rgba(0, 0, 0, 0.14);
+    --border:        #E8DDD4;   /* warm-tinted border */
+    --shadow:        0 2px 12px rgba(0, 0, 0, 0.07);
+    --shadow-hover:  0 6px 24px rgba(0, 0, 0, 0.12);
     --radius:        10px;
     --radius-lg:     16px;
 }
@@ -116,6 +121,22 @@ nav a:hover {
     transform: scale(1.04);
 }
 
+.logout-button {
+    padding: 8px 20px;
+    border-radius: 22px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1.5px solid var(--border);
+    color: var(--text-medium) !important;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.logout-button:hover {
+    border-color: var(--primary);
+    color: var(--primary) !important;
+    background: rgba(255, 56, 92, 0.05);
+}
+
 /* ============================================================
    MAIN CONTENT
    ============================================================ */
@@ -167,7 +188,7 @@ main {
 
 .filters select:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.12);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.18);
 }
 
 /* ============================================================
@@ -205,7 +226,7 @@ main {
     width: 100%;
     height: 190px;
     border-radius: 8px;
-    background: linear-gradient(135deg, #FFE4E8 0%, #FFCDD5 50%, #FFB3C1 100%);
+    background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 50%, #7DD3FC 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -321,7 +342,7 @@ main {
 .form-group textarea:focus,
 .form-group select:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.12);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.18);
 }
 
 .form-group textarea {
@@ -371,9 +392,9 @@ main {
 }
 
 .error-message.error {
-    color: var(--primary);
-    background: rgba(255, 56, 92, 0.08);
-    border: 1px solid rgba(255, 56, 92, 0.2);
+    color: var(--danger);
+    background: rgba(224, 82, 82, 0.08);
+    border: 1px solid rgba(224, 82, 82, 0.22);
 }
 
 .error-message.success {
@@ -395,7 +416,7 @@ main {
 }
 
 .place-hero {
-    background: linear-gradient(135deg, #FF385C 0%, #FF6B8A 100%);
+    background: linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%);
     padding: 52px 44px;
     color: var(--white);
 }
@@ -1135,8 +1156,8 @@ h1, h2, h3, h4, p, span, a, label, li {
 }
 
 .btn-delete {
-    background: rgba(255, 56, 92, 0.1);
-    color: var(--primary);
+    background: rgba(224, 82, 82, 0.1);
+    color: var(--danger);
 }
 
 /* Badges */
@@ -1151,7 +1172,7 @@ h1, h2, h3, h4, p, span, a, label, li {
 }
 
 .badge-admin {
-    background: rgba(255, 56, 92, 0.1);
+    background: rgba(14, 165, 233, 0.12);
     color: var(--primary);
 }
 
@@ -1162,7 +1183,7 @@ h1, h2, h3, h4, p, span, a, label, li {
 
 /* Danger button (used on place.html for admin delete) */
 .btn-danger {
-    background: var(--primary);
+    background: var(--danger);
     color: var(--white);
     padding: 9px 18px;
     border-radius: 8px;
@@ -1176,7 +1197,7 @@ h1, h2, h3, h4, p, span, a, label, li {
 }
 
 .btn-danger:hover {
-    background: var(--primary-dark);
+    background: var(--danger-dark);
 }
 
 /* Admin controls bar on place.html */
@@ -1185,13 +1206,13 @@ h1, h2, h3, h4, p, span, a, label, li {
     gap: 10px;
     flex-wrap: wrap;
     padding: 16px 44px;
-    background: rgba(255, 56, 92, 0.04);
-    border-top: 1px solid rgba(255, 56, 92, 0.12);
+    background: rgba(224, 82, 82, 0.04);
+    border-top: 1px solid rgba(224, 82, 82, 0.12);
 }
 
 /* Admin nav link badge in header */
 #admin-link {
-    background: rgba(255, 56, 92, 0.1);
+    background: rgba(14, 165, 233, 0.12);
     color: var(--primary) !important;
     padding: 5px 14px;
     border-radius: 22px;
