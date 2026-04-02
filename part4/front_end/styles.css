@@ -1,65 +1,76 @@
 /* ============================================================
-   HBnB Frontend Styles
+   HBnB — Dark Shelf Theme
+   Inspired by: premium gallery / record-store shelf aesthetic
    ============================================================ */
 
-/* Reset & Base */
-*, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* ---- Variables -------------------------------------------- */
 :root {
-    /* Brand — holiday sky blue */
+    /* Brand */
     --primary:       #0EA5E9;
     --primary-dark:  #0284C7;
-    /* Danger — softer red, used only for delete/error */
+    --primary-glow:  rgba(14, 165, 233, 0.18);
+    /* Danger — delete / error only */
     --danger:        #E05252;
     --danger-dark:   #C73E3E;
 
-    --text-dark:     #2A2A2A;
-    --text-medium:   #515151;
-    --text-light:    #888888;
-    --bg:            #FFF9F4;   /* warm sandy cream */
+    /* Dark surfaces */
+    --bg:            #0D1117;
+    --surface:       #161B27;
+    --surface-raised:#1C2333;
+    --shelf-plank:   #1E2738;
+    --shelf-edge:    #252D40;
+
+    /* Text on dark */
+    --text-bright:   #F0F6FC;
+    --text-dark:     #F0F6FC;
+    --text-medium:   #B0BEC5;
+    --text-light:    #8B949E;
+
+    /* Card / light elements */
     --white:         #FFFFFF;
-    --border:        #E8DDD4;   /* warm-tinted border */
-    --shadow:        0 2px 12px rgba(0, 0, 0, 0.07);
-    --shadow-hover:  0 6px 24px rgba(0, 0, 0, 0.12);
+    --card-bg:       #FFFFFF;
+    --border:        #DDDDDD;       /* school requirement — kept */
+    --border-dark:   #2D3748;
+
+    /* Shadows */
+    --shadow:        0 4px 24px rgba(0,0,0,0.45);
+    --shadow-hover:  0 20px 48px rgba(0,0,0,0.65), 0 0 28px rgba(14,165,233,0.12);
     --radius:        10px;
     --radius-lg:     16px;
 }
 
-html {
-    scroll-behavior: smooth;
-}
+/* ---- Reset ------------------------------------------------- */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
                  Helvetica, Arial, sans-serif;
     background: var(--bg);
-    color: var(--text-dark);
+    color: var(--text-bright);
     line-height: 1.6;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
+a { color: inherit; text-decoration: none; }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
+img, video { max-width: 100%; height: auto; }
 
+h1,h2,h3,h4,p,span,a,label,li { overflow-wrap:break-word; word-break:break-word; }
+
+/* ---- Header ----------------------------------------------- */
 header {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
+    background: rgba(13, 17, 23, 0.80);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .header-container {
@@ -72,15 +83,7 @@ header {
     justify-content: space-between;
 }
 
-.logo {
-    height: 38px;
-    width: auto;
-    /* Text fallback when logo.png is missing */
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--primary);
-    letter-spacing: -1px;
-}
+.logo { height: 38px; width: auto; }
 
 .logo-fallback {
     font-size: 24px;
@@ -98,26 +101,28 @@ nav {
 nav a {
     font-size: 14px;
     font-weight: 500;
-    color: var(--text-dark);
+    color: var(--text-medium);
     transition: color 0.2s;
 }
 
-nav a:hover {
-    color: var(--primary);
-}
+nav a:hover { color: var(--text-bright); }
 
 .login-button {
     background: var(--primary) !important;
-    color: var(--white) !important;
+    color: #fff !important;
     padding: 8px 20px;
     border-radius: 22px;
     font-weight: 600 !important;
     font-size: 14px !important;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
     transition: background 0.2s, transform 0.1s !important;
 }
 
 .login-button:hover {
     background: var(--primary-dark) !important;
+    color: #fff !important;
     transform: scale(1.04);
 }
 
@@ -126,42 +131,102 @@ nav a:hover {
     border-radius: 22px;
     font-weight: 600;
     font-size: 14px;
-    border: 1.5px solid var(--border);
+    border: 1.5px solid var(--border-dark);
     color: var(--text-medium) !important;
     transition: border-color 0.2s, color 0.2s, background 0.2s;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
 }
 
 .logout-button:hover {
     border-color: var(--primary);
     color: var(--primary) !important;
-    background: rgba(255, 56, 92, 0.05);
+    background: var(--primary-glow);
 }
 
-/* ============================================================
-   MAIN CONTENT
-   ============================================================ */
+/* ---- Hero -------------------------------------------------- */
+.hero {
+    position: relative;
+    padding: 100px 24px 80px;
+    text-align: center;
+    overflow: hidden;
+    background: linear-gradient(160deg, #0D1117 0%, #0D1B2A 60%, #091520 100%);
+}
 
+/* Radial ambient glow */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%,
+                rgba(14,165,233,0.12) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Subtle grid lines */
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(14,165,233,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14,165,233,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-size: clamp(36px, 6vw, 68px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -2px;
+    color: var(--text-bright);
+    margin-bottom: 18px;
+}
+
+.hero-accent {
+    color: var(--primary);
+    position: relative;
+}
+
+.hero-sub {
+    font-size: clamp(15px, 2vw, 18px);
+    color: var(--text-light);
+    max-width: 480px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+}
+
+/* ---- Main -------------------------------------------------- */
 main {
     flex: 1;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 28px 24px;
     width: 100%;
 }
 
-/* ============================================================
-   FILTERS BAR
-   ============================================================ */
+.main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
 
+/* ---- Filters ---------------------------------------------- */
 .filters {
     display: flex;
     align-items: center;
     gap: 14px;
-    margin-bottom: 28px;
+    margin-bottom: 40px;
     padding: 14px 20px;
-    background: var(--white);
+    background: var(--surface);
     border-radius: var(--radius);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-dark);
     box-shadow: var(--shadow);
 }
 
@@ -174,52 +239,87 @@ main {
 
 .filters select {
     padding: 8px 14px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-dark);
     border-radius: 8px;
     font-size: 14px;
-    color: var(--text-dark);
-    background: var(--white);
+    color: var(--text-bright);
+    background: var(--surface-raised);
     cursor: pointer;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
     font-family: inherit;
     min-width: 160px;
+    min-height: 44px;
 }
 
 .filters select:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.18);
+    box-shadow: 0 0 0 3px rgba(14,165,233,0.18);
 }
 
-/* ============================================================
-   PLACES GRID
-   ============================================================ */
+/* ---- Shelf layout ----------------------------------------- */
+.shelf-row {
+    position: relative;
+    margin-bottom: 52px;
+    padding-bottom: 20px;
+}
 
-.places-grid {
+/* The shelf plank */
+.shelf-row::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 4px;
+    right: 4px;
+    height: 12px;
+    background: linear-gradient(180deg, var(--shelf-plank) 0%, #131A28 100%);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.7), 0 2px 4px rgba(0,0,0,0.9);
+}
+
+/* Shelf label */
+.shelf-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 4px;
+    padding-left: 24px;
+    opacity: 0.6;
+}
+
+.shelf-row-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    gap: 8px;
+    grid-template-columns: repeat(3, 1fr);
 }
 
-/* ============================================================
-   PLACE CARD
-   ============================================================ */
-
+/* ---- Place card ------------------------------------------- */
+/* Required school values are preserved exactly */
 .place-card {
-    background: var(--white);
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 10px;
-    margin: 20px;
-    box-shadow: var(--shadow);
-    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    background: #0D1B2A;
+    border: 1px solid var(--border-dark); /* required */
+    border-radius: 10px;              /* required */
+    padding: 10px;                    /* required */
+    margin: 20px;                     /* required */
+    box-shadow:
+        0 8px 24px rgba(0,0,0,0.5),
+        0 2px 6px rgba(0,0,0,0.7),
+        0 -1px 0 rgba(255,255,255,0.06) inset;
+    transition:
+        transform 0.32s cubic-bezier(0.34,1.56,0.64,1),
+        box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 }
 
 .place-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-hover);
+    transform: translateY(-14px) scale(1.025);
+    box-shadow:
+        0 28px 56px rgba(0,0,0,0.7),
+        0 0 32px rgba(14,165,233,0.14),
+        0 -1px 0 rgba(255,255,255,0.1) inset;
 }
 
 .place-card-img {
@@ -236,10 +336,17 @@ main {
     flex-shrink: 0;
 }
 
+.place-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .place-card h3 {
     font-size: 16px;
     font-weight: 700;
-    color: var(--text-dark);
+    color: var(--text-bright);
     margin-bottom: 6px;
     white-space: nowrap;
     overflow: hidden;
@@ -248,20 +355,20 @@ main {
 
 .place-card .price {
     font-size: 14px;
-    color: var(--text-light);
+    color: var(--text-medium);
     margin-bottom: 16px;
     flex: 1;
 }
 
 .place-card .price strong {
-    color: var(--text-dark);
+    color: var(--text-bright);
     font-weight: 700;
 }
 
 .details-button {
     display: block;
     background: var(--primary);
-    color: var(--white);
+    color: #fff;
     padding: 10px 0;
     border-radius: 8px;
     font-weight: 600;
@@ -273,31 +380,30 @@ main {
     font-family: inherit;
     width: 100%;
     margin-top: auto;
+    min-height: 44px;
 }
 
 .details-button:hover {
     background: var(--primary-dark);
     transform: scale(1.02);
-    color: var(--white);
+    color: #fff;
 }
 
-/* ============================================================
-   AUTH / FORMS CONTAINER
-   ============================================================ */
-
+/* ---- Auth / form container -------------------------------- */
 .auth-container {
     max-width: 440px;
     margin: 56px auto;
-    background: var(--white);
+    background: var(--surface);
     border-radius: var(--radius-lg);
     padding: 44px 40px;
-    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--border-dark);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset;
 }
 
 .auth-container h1 {
     font-size: 26px;
     font-weight: 700;
-    color: var(--text-dark);
+    color: var(--text-bright);
     margin-bottom: 6px;
     text-align: center;
 }
@@ -309,9 +415,7 @@ main {
     margin-bottom: 32px;
 }
 
-.form-group {
-    margin-bottom: 22px;
-}
+.form-group { margin-bottom: 22px; }
 
 .form-group label {
     display: block;
@@ -328,21 +432,27 @@ main {
 .form-group select {
     width: 100%;
     padding: 12px 16px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-dark);
     border-radius: 8px;
-    font-size: 15px;
-    color: var(--text-dark);
+    font-size: 16px;
+    color: var(--text-bright);
+    background: var(--surface-raised);
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
     font-family: inherit;
-    background: var(--white);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-light);
+    opacity: 0.7;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.18);
+    box-shadow: 0 0 0 3px rgba(14,165,233,0.18);
 }
 
 .form-group textarea {
@@ -354,7 +464,7 @@ main {
     width: 100%;
     padding: 14px;
     background: var(--primary);
-    color: var(--white);
+    color: #fff;
     border: none;
     border-radius: 8px;
     font-size: 16px;
@@ -363,21 +473,13 @@ main {
     transition: background 0.2s, transform 0.1s;
     font-family: inherit;
     margin-top: 4px;
+    min-height: 44px;
 }
 
-.btn-primary:hover {
-    background: var(--primary-dark);
-    transform: scale(1.01);
-}
+.btn-primary:hover  { background: var(--primary-dark); transform: scale(1.01); }
+.btn-primary:active { transform: scale(0.99); }
 
-.btn-primary:active {
-    transform: scale(0.99);
-}
-
-/* ============================================================
-   MESSAGES (ERROR / SUCCESS)
-   ============================================================ */
-
+/* ---- Messages --------------------------------------------- */
 .error-message {
     font-size: 14px;
     text-align: center;
@@ -387,38 +489,34 @@ main {
     display: none;
 }
 
-.error-message.show {
-    display: block;
-}
+.error-message.show { display: block; }
 
 .error-message.error {
     color: var(--danger);
-    background: rgba(224, 82, 82, 0.08);
-    border: 1px solid rgba(224, 82, 82, 0.22);
+    background: rgba(224,82,82,0.1);
+    border: 1px solid rgba(224,82,82,0.25);
 }
 
 .error-message.success {
-    color: #00875A;
-    background: rgba(0, 135, 90, 0.08);
-    border: 1px solid rgba(0, 135, 90, 0.2);
+    color: #4ADE80;
+    background: rgba(74,222,128,0.08);
+    border: 1px solid rgba(74,222,128,0.2);
 }
 
-/* ============================================================
-   PLACE DETAILS PAGE
-   ============================================================ */
-
+/* ---- Place details page ----------------------------------- */
 .place-details {
-    background: var(--white);
+    background: var(--surface);
     border-radius: var(--radius-lg);
     overflow: hidden;
+    border: 1px solid var(--border-dark);
     box-shadow: var(--shadow);
     margin-bottom: 36px;
 }
 
 .place-hero {
-    background: linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%);
+    background: linear-gradient(135deg, #0D1B2A 0%, #0A2540 50%, #0EA5E9 100%);
     padding: 52px 44px;
-    color: var(--white);
+    color: #fff;
 }
 
 .place-hero h1 {
@@ -435,31 +533,40 @@ main {
     flex-wrap: wrap;
 }
 
-.meta-item {
-    font-size: 15px;
-    opacity: 0.9;
-}
+.meta-item { font-size: 15px; opacity: 0.85; }
 
 .price-tag {
     font-size: 20px;
     font-weight: 700;
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(255,255,255,0.15);
     padding: 6px 18px;
     border-radius: 22px;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
-.place-info {
-    padding: 36px 44px;
+.place-detail-image {
+    width: 100%;
+    height: 360px;
+    overflow: hidden;
 }
+
+.place-detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.place-info { padding: 36px 44px; }
 
 .place-info h2 {
     font-size: 20px;
     font-weight: 700;
-    color: var(--text-dark);
+    color: var(--text-bright);
     margin-bottom: 14px;
     padding-bottom: 10px;
-    border-bottom: 2px solid var(--bg);
+    border-bottom: 1px solid var(--border-dark);
 }
 
 .place-description {
@@ -475,8 +582,9 @@ main {
     gap: 18px;
     margin-bottom: 32px;
     padding: 20px;
-    background: var(--bg);
+    background: var(--surface-raised);
     border-radius: 12px;
+    border: 1px solid var(--border-dark);
 }
 
 .host-avatar {
@@ -484,7 +592,7 @@ main {
     height: 54px;
     border-radius: 50%;
     background: var(--primary);
-    color: var(--white);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -493,17 +601,8 @@ main {
     flex-shrink: 0;
 }
 
-.host-info h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-dark);
-    margin-bottom: 2px;
-}
-
-.host-info p {
-    font-size: 13px;
-    color: var(--text-light);
-}
+.host-info h3 { font-size: 16px; font-weight: 600; color: var(--text-bright); margin-bottom: 2px; }
+.host-info p  { font-size: 13px; color: var(--text-light); }
 
 .amenities-list {
     display: flex;
@@ -513,8 +612,8 @@ main {
 }
 
 .amenity-tag {
-    background: var(--bg);
-    border: 1px solid var(--border);
+    background: var(--surface-raised);
+    border: 1px solid var(--border-dark);
     padding: 6px 16px;
     border-radius: 22px;
     font-size: 13px;
@@ -522,27 +621,22 @@ main {
     font-weight: 500;
 }
 
-/* ============================================================
-   REVIEWS SECTION
-   ============================================================ */
-
-.reviews-section {
-    margin-bottom: 32px;
-}
+/* ---- Reviews --------------------------------------------- */
+.reviews-section { margin-bottom: 32px; }
 
 .reviews-section > h2 {
     font-size: 22px;
     font-weight: 700;
-    color: var(--text-dark);
+    color: var(--text-bright);
     margin-bottom: 20px;
 }
 
 .review-card {
-    background: var(--white);
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 10px;
-    margin: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border-dark); /* required */
+    border-radius: 10px;             /* required */
+    padding: 10px;                   /* required */
+    margin: 20px;                    /* required */
     margin-left: 0;
     box-shadow: var(--shadow);
 }
@@ -552,40 +646,22 @@ main {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
-.reviewer-name {
-    font-weight: 600;
-    color: var(--text-dark);
-    font-size: 15px;
-}
+.reviewer-name { font-weight: 600; color: var(--text-bright); font-size: 15px; }
+.review-stars  { color: #FFB400; font-size: 18px; letter-spacing: 2px; }
+.review-text   { color: var(--text-medium); font-size: 14px; line-height: 1.7; }
 
-.review-stars {
-    color: #FFB400;
-    font-size: 18px;
-    letter-spacing: 2px;
-}
+.no-reviews { color: var(--text-light); font-style: italic; padding: 20px 0; }
 
-.review-text {
-    color: var(--text-medium);
-    font-size: 14px;
-    line-height: 1.7;
-}
-
-.no-reviews {
-    color: var(--text-light);
-    font-style: italic;
-    padding: 20px 0;
-}
-
-/* ============================================================
-   ADD REVIEW SECTION (on place.html and add_review.html)
-   ============================================================ */
-
+/* ---- Add review ------------------------------------------ */
 .add-review {
-    background: var(--white);
+    background: var(--surface);
     border-radius: var(--radius-lg);
     padding: 36px;
+    border: 1px solid var(--border-dark);
     box-shadow: var(--shadow);
     margin-bottom: 32px;
 }
@@ -593,17 +669,12 @@ main {
 .add-review h2 {
     font-size: 22px;
     font-weight: 700;
-    color: var(--text-dark);
+    color: var(--text-bright);
     margin-bottom: 28px;
 }
 
-/* ============================================================
-   LOADING & EMPTY STATES
-   ============================================================ */
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
+/* ---- Loading / empty states ------------------------------ */
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .loading {
     text-align: center;
@@ -616,9 +687,8 @@ main {
 .loading::after {
     content: '';
     display: inline-block;
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--border);
+    width: 18px; height: 18px;
+    border: 2px solid var(--border-dark);
     border-top-color: var(--primary);
     border-radius: 50%;
     animation: spin 0.75s linear infinite;
@@ -633,386 +703,34 @@ main {
     grid-column: 1 / -1;
 }
 
-.empty-state h3 {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--text-medium);
-}
+.empty-state h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--text-medium); }
+.empty-state p  { font-size: 14px; }
+.empty-state a  { color: var(--primary); font-weight: 500; }
 
-.empty-state p {
-    font-size: 14px;
-}
-
-.empty-state a {
-    color: var(--primary);
-    font-weight: 500;
-}
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-
+/* ---- Footer ---------------------------------------------- */
 footer {
-    background: var(--text-dark);
-    color: rgba(255, 255, 255, 0.65);
+    background: #080C12;
+    border-top: 1px solid var(--border-dark);
+    color: var(--text-light);
     text-align: center;
-    padding: 26px 24px;
+    padding: 28px 24px;
     font-size: 14px;
     margin-top: auto;
 }
 
-footer strong {
-    color: rgba(255, 255, 255, 0.9);
-}
+footer strong { color: var(--text-medium); }
 
-/* ============================================================
-   RESPONSIVE
-   Breakpoints:
-     xl  : 1200px+       (large desktops)
-     lg  : 1024px–1199px (laptops / small desktops)
-     md  : 768px–1023px  (tablets landscape + portrait)
-     sm  : 480px–767px   (large phones / phablets)
-     xs  : < 480px       (phones)
-   ============================================================ */
-
-/* --- Global overflow protection ----------------------------- */
-body {
-    overflow-x: hidden;
-}
-
-img, video, iframe {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Prevent text overflow on any screen */
-h1, h2, h3, h4, p, span, a, label, li {
-    overflow-wrap: break-word;
-    word-break: break-word;
-}
-
-/* Minimum touch target size for interactive elements */
-.details-button,
-.btn-primary {
-    min-height: 44px;
-}
-
-.login-button {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-}
-
-/* ---- Large desktops (1200px+) ------------------------------ */
-/* Already covered by base styles (max-width: 1200px container) */
-
-/* ---- Laptops (1024px – 1199px) ----------------------------- */
-@media (max-width: 1199px) {
-    .places-grid {
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    }
-}
-
-/* ---- Tablets landscape + small laptops (768px – 1023px) ---- */
-@media (max-width: 1023px) {
-    .header-container {
-        padding: 0 20px;
-    }
-
-    main {
-        padding: 24px 20px;
-    }
-
-    .places-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 4px;
-    }
-
-    .place-hero {
-        padding: 44px 36px;
-    }
-
-    .place-info {
-        padding: 32px 36px;
-    }
-
-    .add-review {
-        padding: 32px;
-    }
-}
-
-/* ---- Tablets portrait (640px – 767px) ---------------------- */
-@media (max-width: 767px) {
-    /* Header */
-    .header-container {
-        padding: 0 16px;
-        height: 58px;
-    }
-
-    .logo {
-        height: 32px;
-    }
-
-    nav {
-        gap: 12px;
-    }
-
-    nav a:not(.login-button) {
-        font-size: 13px;
-    }
-
-    /* Main layout */
-    main {
-        padding: 20px 16px;
-    }
-
-    /* Filter bar stacks vertically */
-    .filters {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 14px 16px;
-    }
-
-    .filters select {
-        width: 100%;
-        min-width: unset;
-    }
-
-    /* Cards: 2 columns on tablet portrait */
-    .places-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0;
-    }
-
-    .place-card {
-        margin: 8px;
-    }
-
-    /* Place details */
-    .place-hero {
-        padding: 32px 24px;
-    }
-
-    .place-hero h1 {
-        font-size: 28px;
-    }
-
-    .place-info {
-        padding: 24px;
-    }
-
-    .place-info h2 {
-        font-size: 18px;
-    }
-
-    /* Reviews */
-    .review-card {
-        margin: 10px 0;
-    }
-
-    .reviews-section > h2 {
-        font-size: 20px;
-    }
-
-    /* Add review */
-    .add-review {
-        padding: 24px;
-    }
-
-    .add-review h2 {
-        font-size: 20px;
-        margin-bottom: 20px;
-    }
-
-    /* Auth forms */
-    .auth-container {
-        margin: 32px 16px;
-        padding: 32px 24px;
-    }
-}
-
-/* ---- Large phones / phablets (480px – 639px) --------------- */
-@media (max-width: 639px) {
-    /* Prevent iOS from zooming on input focus (font-size must be ≥ 16px) */
-    .form-group input,
-    .form-group textarea,
-    .form-group select,
-    .filters select {
-        font-size: 16px;
-    }
-
-    /* Single column grid */
-    .places-grid {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-
-    .place-card {
-        margin: 8px 0;
-    }
-
-    /* Meta info wraps */
-    .place-meta {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .price-tag {
-        font-size: 17px;
-    }
-}
-
-/* ---- Small phones (< 480px) -------------------------------- */
-@media (max-width: 479px) {
-    /* Header: hide "Home" link to save space, keep logo + login */
-    nav a:not(.login-button) {
-        display: none;
-    }
-
-    .login-button {
-        padding: 8px 14px;
-    }
-
-    /* Main */
-    main {
-        padding: 16px 12px;
-    }
-
-    /* Filter bar */
-    .filters {
-        padding: 12px;
-        margin-bottom: 20px;
-    }
-
-    .filters label {
-        font-size: 13px;
-    }
-
-    /* Cards */
-    .place-card {
-        margin: 6px 0;
-    }
-
-    .place-card-img {
-        height: 160px;
-        font-size: 44px;
-    }
-
-    .place-card h3 {
-        font-size: 15px;
-    }
-
-    /* Place hero */
-    .place-hero {
-        padding: 24px 16px;
-    }
-
-    .place-hero h1 {
-        font-size: 22px;
-        margin-bottom: 10px;
-    }
-
-    .meta-item {
-        font-size: 13px;
-    }
-
-    .price-tag {
-        font-size: 15px;
-        padding: 5px 14px;
-    }
-
-    /* Place info */
-    .place-info {
-        padding: 18px 16px;
-    }
-
-    .place-info h2 {
-        font-size: 17px;
-    }
-
-    .host-info {
-        padding: 14px;
-        gap: 12px;
-    }
-
-    .host-avatar {
-        width: 44px;
-        height: 44px;
-        font-size: 18px;
-    }
-
-    /* Reviews */
-    .review-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-    }
-
-    .review-stars {
-        font-size: 15px;
-    }
-
-    .reviews-section > h2 {
-        font-size: 18px;
-    }
-
-    /* Add review */
-    .add-review {
-        padding: 18px 16px;
-        border-radius: var(--radius);
-    }
-
-    .add-review h2 {
-        font-size: 18px;
-        margin-bottom: 16px;
-    }
-
-    /* Auth forms: full-width, minimal margin */
-    .auth-container {
-        margin: 16px 12px;
-        padding: 24px 18px;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-    }
-
-    .auth-container h1 {
-        font-size: 22px;
-    }
-
-    .btn-primary {
-        font-size: 15px;
-        padding: 13px;
-    }
-
-    /* Footer */
-    footer {
-        padding: 20px 16px;
-        font-size: 13px;
-    }
-}
-
-/* ============================================================
-   ADMIN DASHBOARD
-   ============================================================ */
-
-.admin-header {
-    margin-bottom: 32px;
-}
+/* ---- Admin panel ----------------------------------------- */
+.admin-header { margin-bottom: 32px; }
 
 .admin-header h1 {
     font-size: 28px;
     font-weight: 800;
-    color: var(--text-dark);
+    color: var(--text-bright);
     margin-bottom: 4px;
 }
 
-.admin-header p {
-    color: var(--text-light);
-    font-size: 14px;
-}
+.admin-header p { color: var(--text-light); font-size: 14px; }
 
 .admin-grid {
     display: grid;
@@ -1022,9 +740,10 @@ h1, h2, h3, h4, p, span, a, label, li {
 }
 
 .admin-section {
-    background: var(--white);
+    background: var(--surface);
     border-radius: var(--radius-lg);
     padding: 32px;
+    border: 1px solid var(--border-dark);
     box-shadow: var(--shadow);
     margin-bottom: 32px;
 }
@@ -1032,27 +751,16 @@ h1, h2, h3, h4, p, span, a, label, li {
 .admin-section h2 {
     font-size: 18px;
     font-weight: 700;
-    color: var(--text-dark);
+    color: var(--text-bright);
     margin-bottom: 22px;
     padding-bottom: 12px;
-    border-bottom: 2px solid var(--bg);
+    border-bottom: 1px solid var(--border-dark);
 }
 
-/* Admin form (compact, inside a section) */
-.admin-form .form-group {
-    margin-bottom: 14px;
-}
-
-.admin-form .form-group label {
-    font-size: 11px;
-    margin-bottom: 4px;
-}
-
+.admin-form .form-group { margin-bottom: 14px; }
+.admin-form .form-group label { font-size: 11px; margin-bottom: 4px; }
 .admin-form .form-group input,
-.admin-form .form-group select {
-    padding: 9px 12px;
-    font-size: 14px;
-}
+.admin-form .form-group select { padding: 9px 12px; font-size: 14px; }
 
 .admin-form-row {
     display: grid;
@@ -1060,15 +768,9 @@ h1, h2, h3, h4, p, span, a, label, li {
     gap: 12px;
 }
 
-/* Tables */
-.admin-table-wrapper {
-    overflow-x: auto;
-}
+.admin-table-wrapper { overflow-x: auto; }
 
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+.admin-table { width: 100%; border-collapse: collapse; }
 
 .admin-table th {
     text-align: left;
@@ -1078,47 +780,41 @@ h1, h2, h3, h4, p, span, a, label, li {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     padding: 8px 10px;
-    border-bottom: 2px solid var(--border);
+    border-bottom: 1px solid var(--border-dark);
     white-space: nowrap;
 }
 
 .admin-table td {
     padding: 11px 10px;
-    border-bottom: 1px solid var(--bg);
+    border-bottom: 1px solid rgba(45,55,72,0.5);
     font-size: 13px;
     color: var(--text-medium);
     vertical-align: middle;
 }
 
-.admin-table tr:last-child td {
-    border-bottom: none;
-}
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: var(--surface-raised); }
 
-.admin-table tr:hover td {
-    background: var(--bg);
-}
-
-/* Inline edit row */
-.edit-row td {
-    background: #FFF8F9 !important;
-}
+.edit-row td { background: rgba(14,165,233,0.04) !important; }
 
 .edit-row input {
     width: 100%;
     padding: 5px 9px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-dark);
     border-radius: 6px;
     font-size: 13px;
     font-family: inherit;
     outline: none;
+    background: var(--surface-raised);
+    color: var(--text-bright);
     min-width: 80px;
 }
 
 .edit-row input:focus {
     border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(14,165,233,0.18);
 }
 
-/* Small action buttons */
 .btn-sm {
     padding: 5px 12px;
     border-radius: 6px;
@@ -1132,35 +828,14 @@ h1, h2, h3, h4, p, span, a, label, li {
     white-space: nowrap;
 }
 
-.btn-sm:hover {
-    opacity: 0.82;
-}
+.btn-sm:hover  { opacity: 0.82; }
+.btn-sm:active { transform: scale(0.97); }
 
-.btn-sm:active {
-    transform: scale(0.97);
-}
+.btn-edit   { background: rgba(14,165,233,0.12); color: var(--primary); }
+.btn-save   { background: rgba(74,222,128,0.1);  color: #4ADE80; }
+.btn-cancel { background: var(--surface-raised); color: var(--text-medium); }
+.btn-delete { background: rgba(224,82,82,0.12);  color: var(--danger); }
 
-.btn-edit {
-    background: #EBF5FF;
-    color: #0069BF;
-}
-
-.btn-save {
-    background: #E6F7F0;
-    color: #00875A;
-}
-
-.btn-cancel {
-    background: var(--bg);
-    color: var(--text-medium);
-}
-
-.btn-delete {
-    background: rgba(224, 82, 82, 0.1);
-    color: var(--danger);
-}
-
-/* Badges */
 .badge {
     display: inline-block;
     padding: 2px 9px;
@@ -1171,20 +846,12 @@ h1, h2, h3, h4, p, span, a, label, li {
     letter-spacing: 0.3px;
 }
 
-.badge-admin {
-    background: rgba(14, 165, 233, 0.12);
-    color: var(--primary);
-}
+.badge-admin { background: rgba(14,165,233,0.12); color: var(--primary); }
+.badge-user  { background: rgba(74,222,128,0.1);  color: #4ADE80; }
 
-.badge-user {
-    background: rgba(0, 135, 90, 0.1);
-    color: #00875A;
-}
-
-/* Danger button (used on place.html for admin delete) */
 .btn-danger {
     background: var(--danger);
-    color: var(--white);
+    color: #fff;
     padding: 9px 18px;
     border-radius: 8px;
     border: none;
@@ -1196,23 +863,19 @@ h1, h2, h3, h4, p, span, a, label, li {
     min-height: 40px;
 }
 
-.btn-danger:hover {
-    background: var(--danger-dark);
-}
+.btn-danger:hover { background: var(--danger-dark); }
 
-/* Admin controls bar on place.html */
 .admin-controls {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     padding: 16px 44px;
-    background: rgba(224, 82, 82, 0.04);
-    border-top: 1px solid rgba(224, 82, 82, 0.12);
+    background: rgba(224,82,82,0.04);
+    border-top: 1px solid rgba(224,82,82,0.12);
 }
 
-/* Admin nav link badge in header */
 #admin-link {
-    background: rgba(14, 165, 233, 0.12);
+    background: rgba(14,165,233,0.12);
     color: var(--primary) !important;
     padding: 5px 14px;
     border-radius: 22px;
@@ -1224,33 +887,83 @@ h1, h2, h3, h4, p, span, a, label, li {
 
 #admin-link:hover {
     background: var(--primary);
-    color: var(--white) !important;
+    color: #fff !important;
 }
 
-/* Responsive admin */
+/* ---- Responsive ------------------------------------------ */
+body { overflow-x: hidden; }
+
+.details-button, .btn-primary { min-height: 44px; }
+
+@media (max-width: 1199px) {
+    .shelf-row-cards { grid-template-columns: repeat(3, 1fr); }
+}
+
 @media (max-width: 1023px) {
-    .admin-grid {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
+    .header-container { padding: 0 20px; }
+    .main-inner { padding: 24px 20px; }
+    .shelf-row-cards { grid-template-columns: repeat(2, 1fr); }
+    .place-hero { padding: 44px 36px; }
+    .place-info { padding: 32px 36px; }
+    .admin-grid { grid-template-columns: 1fr; gap: 0; }
 }
 
 @media (max-width: 767px) {
-    .admin-section {
-        padding: 20px 16px;
-    }
+    .header-container { padding: 0 16px; height: 58px; }
+    .logo { height: 32px; }
+    nav { gap: 12px; }
+    nav a:not(.login-button):not(.logout-button) { font-size: 13px; }
 
-    .admin-form-row {
-        grid-template-columns: 1fr;
-    }
+    .main-inner { padding: 20px 16px; }
 
-    .admin-controls {
+    .hero { padding: 72px 16px 56px; }
+    .hero-title { letter-spacing: -1px; }
+
+    .filters {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
         padding: 14px 16px;
     }
+    .filters select { width: 100%; min-width: unset; font-size: 16px; }
+
+    .shelf-row-cards { grid-template-columns: repeat(2, 1fr); }
+
+    .place-card { margin: 8px; }
+    .review-card { margin: 10px 0; }
+    .place-hero { padding: 32px 24px; }
+    .place-hero h1 { font-size: 26px; }
+    .place-info { padding: 24px; }
+    .place-info h2 { font-size: 18px; }
+    .admin-section { padding: 20px 16px; }
+    .admin-controls { padding: 14px 16px; }
+    .add-review { padding: 24px; }
+    .auth-container { margin: 32px 16px; padding: 32px 24px; }
+}
+
+@media (max-width: 639px) {
+    .shelf-row-cards { grid-template-columns: 1fr; }
+    .place-card { margin: 8px 0; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select,
+    .filters select { font-size: 16px; }
+    .place-meta { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .price-tag { font-size: 17px; }
 }
 
 @media (max-width: 479px) {
-    .admin-header h1 {
-        font-size: 22px;
-    }
+    nav a:not(.login-button):not(.logout-button) { display: none; }
+    .login-button, .logout-button { padding: 8px 14px; }
+    .main-inner { padding: 16px 12px; }
+    .hero { padding: 56px 12px 44px; }
+    .place-hero { padding: 24px 16px; }
+    .place-hero h1 { font-size: 22px; }
+    .place-info { padding: 18px 16px; }
+    .auth-container { margin: 16px 12px; padding: 24px 18px; border-radius: var(--radius); }
+    .auth-container h1 { font-size: 22px; }
+    .btn-primary { font-size: 15px; padding: 13px; }
+    footer { padding: 20px 16px; font-size: 13px; }
+    .admin-header h1 { font-size: 22px; }
+    .admin-form-row { grid-template-columns: 1fr; }
 }

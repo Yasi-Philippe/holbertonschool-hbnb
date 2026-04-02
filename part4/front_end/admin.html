@@ -26,131 +26,114 @@
     </header>
 
     <main>
-        <div class="admin-header">
-            <h1>Admin Panel</h1>
-            <p>Manage users, amenities, and places.</p>
-        </div>
-
-        <!-- ================================================
-             USER MANAGEMENT
-             ================================================ -->
-        <div class="admin-grid">
-
-            <!-- Create user form -->
-            <div class="admin-section">
-                <h2>Create New User</h2>
-                <form id="create-user-form" class="admin-form" novalidate>
-                    <div class="admin-form-row">
-                        <div class="form-group">
-                            <label for="new-user-fn">First Name</label>
-                            <input type="text" id="new-user-fn" placeholder="Alice" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="new-user-ln">Last Name</label>
-                            <input type="text" id="new-user-ln" placeholder="Smith" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="new-user-email">Email Address</label>
-                        <input type="email" id="new-user-email" placeholder="alice@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="new-user-pw">Password</label>
-                        <input type="password" id="new-user-pw" placeholder="Choose a password" required autocomplete="new-password">
-                    </div>
-                    <button type="submit" class="btn-primary">Create User</button>
-                    <p id="create-user-msg" class="error-message" role="alert"></p>
-                </form>
+        <div class="main-inner">
+            <div class="admin-header">
+                <h1>Admin Panel</h1>
+                <p>Manage users, amenities, and places.</p>
             </div>
 
-            <!-- Users table -->
+            <!-- User Management -->
+            <div class="admin-grid">
+                <div class="admin-section">
+                    <h2>Create New User</h2>
+                    <form id="create-user-form" class="admin-form" novalidate>
+                        <div class="admin-form-row">
+                            <div class="form-group">
+                                <label for="new-user-fn">First Name</label>
+                                <input type="text" id="new-user-fn" placeholder="Alice" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-user-ln">Last Name</label>
+                                <input type="text" id="new-user-ln" placeholder="Smith" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-user-email">Email Address</label>
+                            <input type="email" id="new-user-email" placeholder="alice@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-user-pw">Password</label>
+                            <input type="password" id="new-user-pw" placeholder="Choose a password"
+                                   required autocomplete="new-password">
+                        </div>
+                        <button type="submit" class="btn-primary">Create User</button>
+                        <p id="create-user-msg" class="error-message" role="alert"></p>
+                    </form>
+                </div>
+
+                <div class="admin-section">
+                    <h2>All Users</h2>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-tbody">
+                                <tr><td colspan="4" style="text-align:center;color:var(--text-light);">Loading&#8230;</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Amenity Management -->
+            <div class="admin-grid">
+                <div class="admin-section">
+                    <h2>Create New Amenity</h2>
+                    <form id="create-amenity-form" class="admin-form" novalidate>
+                        <div class="form-group">
+                            <label for="new-amenity-name">Amenity Name</label>
+                            <input type="text" id="new-amenity-name"
+                                   placeholder="e.g. WiFi, Pool, Parking&#8230;" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Create Amenity</button>
+                        <p id="create-amenity-msg" class="error-message" role="alert"></p>
+                    </form>
+                </div>
+
+                <div class="admin-section">
+                    <h2>All Amenities</h2>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="amenities-tbody">
+                                <tr><td colspan="2" style="text-align:center;color:var(--text-light);">Loading&#8230;</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Place Management -->
             <div class="admin-section">
-                <h2>All Users</h2>
+                <h2>All Places</h2>
                 <div class="admin-table-wrapper">
                     <table class="admin-table">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
+                                <th>Title</th>
+                                <th>Price / night</th>
+                                <th>Owner ID</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="users-tbody">
-                            <tr>
-                                <td colspan="4" style="text-align:center;color:var(--text-light);">Loading&#8230;</td>
-                            </tr>
+                        <tbody id="places-admin-tbody">
+                            <tr><td colspan="4" style="text-align:center;color:var(--text-light);">Loading&#8230;</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </div>
-
-        <!-- ================================================
-             AMENITY MANAGEMENT
-             ================================================ -->
-        <div class="admin-grid">
-
-            <!-- Create amenity form -->
-            <div class="admin-section">
-                <h2>Create New Amenity</h2>
-                <form id="create-amenity-form" class="admin-form" novalidate>
-                    <div class="form-group">
-                        <label for="new-amenity-name">Amenity Name</label>
-                        <input type="text" id="new-amenity-name" placeholder="e.g. WiFi, Pool, Parking&#8230;" required>
-                    </div>
-                    <button type="submit" class="btn-primary">Create Amenity</button>
-                    <p id="create-amenity-msg" class="error-message" role="alert"></p>
-                </form>
-            </div>
-
-            <!-- Amenities table -->
-            <div class="admin-section">
-                <h2>All Amenities</h2>
-                <div class="admin-table-wrapper">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="amenities-tbody">
-                            <tr>
-                                <td colspan="2" style="text-align:center;color:var(--text-light);">Loading&#8230;</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- ================================================
-             PLACE MANAGEMENT
-             ================================================ -->
-        <div class="admin-section">
-            <h2>All Places</h2>
-            <div class="admin-table-wrapper">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Price / night</th>
-                            <th>Owner ID</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="places-admin-tbody">
-                        <tr>
-                            <td colspan="4" style="text-align:center;color:var(--text-light);">Loading&#8230;</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </main>
 
     <footer>

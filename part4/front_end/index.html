@@ -25,20 +25,30 @@
         </div>
     </header>
 
-    <main>
-        <section class="filters" aria-label="Filter places">
-            <label for="price-filter">Max price per night:</label>
-            <select id="price-filter" aria-label="Filter by maximum price per night">
-                <option value="all" selected>All prices</option>
-                <option value="10">Up to $10</option>
-                <option value="50">Up to $50</option>
-                <option value="100">Up to $100</option>
-            </select>
-        </section>
+    <!-- Hero -->
+    <section class="hero" aria-label="Welcome">
+        <div class="hero-content">
+            <h1 class="hero-title">Find your next <span class="hero-accent">getaway</span></h1>
+            <p class="hero-sub">Discover hand-picked places to stay — from cosy city apartments to countryside escapes.</p>
+        </div>
+    </section>
 
-        <section id="places-list" class="places-grid" aria-label="Available places">
-            <div class="loading">Loading places</div>
-        </section>
+    <main>
+        <div class="main-inner">
+            <section class="filters" aria-label="Filter places">
+                <label for="price-filter">Max price per night:</label>
+                <select id="price-filter" aria-label="Filter by maximum price per night">
+                    <option value="all" selected>All prices</option>
+                    <option value="10">Up to $10</option>
+                    <option value="50">Up to $50</option>
+                    <option value="100">Up to $100</option>
+                </select>
+            </section>
+
+            <section id="places-list" aria-label="Available places">
+                <div class="loading">Loading places</div>
+            </section>
+        </div>
     </main>
 
     <footer>

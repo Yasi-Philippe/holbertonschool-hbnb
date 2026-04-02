@@ -209,25 +209,51 @@ function displayPlaces(places) {
 
     list.innerHTML = '';
 
-    places.forEach(place => {
-        const card  = document.createElement('div');
-        card.className  = 'place-card';
-        card.dataset.price = place.price !== undefined ? place.price : 0;
+    const imageMap = {
+        'Maison de campagne': 'place_default.jpg',
+        'Appartement cosy':   'place_appartement.jpg',
+        'Studio moderne':     'place_studio.jpg'
+    };
 
-        const price = place.price !== undefined
-            ? `<strong>$${Number(place.price).toFixed(2)}</strong> / night`
-            : 'Price unavailable';
+    // Group into shelf rows of 3
+    const ROW_SIZE = 3;
+    for (let i = 0; i < places.length; i += ROW_SIZE) {
+        const rowPlaces = places.slice(i, i + ROW_SIZE);
 
-        card.innerHTML = `
-            <div class="place-card-img" role="img" aria-label="Place illustration">🏠</div>
-            <h3>${escapeHtml(place.title)}</h3>
-            <p class="price">${price}</p>
-            <a href="place.html?id=${encodeURIComponent(place.id)}"
-               class="details-button">View Details</a>
-        `;
+        const shelfRow = document.createElement('div');
+        shelfRow.className = 'shelf-row';
 
-        list.appendChild(card);
-    });
+        const cardsWrapper = document.createElement('div');
+        cardsWrapper.className = 'shelf-row-cards';
+
+        rowPlaces.forEach(place => {
+            const card = document.createElement('div');
+            card.className = 'place-card';
+            card.dataset.price = place.price !== undefined ? place.price : 0;
+
+            const price = place.price !== undefined
+                ? `<strong>$${Number(place.price).toFixed(2)}</strong> / night`
+                : 'Price unavailable';
+
+            const imgSrc  = imageMap[place.title];
+            const imgHtml = imgSrc
+                ? `<img src="${imgSrc}" alt="${escapeHtml(place.title)}">`
+                : '🏠';
+
+            card.innerHTML = `
+                <div class="place-card-img" role="img" aria-label="Place illustration">${imgHtml}</div>
+                <h3>${escapeHtml(place.title)}</h3>
+                <p class="price">${price}</p>
+                <a href="place.html?id=${encodeURIComponent(place.id)}"
+                   class="details-button">View Details</a>
+            `;
+
+            cardsWrapper.appendChild(card);
+        });
+
+        shelfRow.appendChild(cardsWrapper);
+        list.appendChild(shelfRow);
+    }
 }
 
 function setupPriceFilter() {
@@ -236,12 +262,17 @@ function setupPriceFilter() {
 
     filter.addEventListener('change', (event) => {
         const value = event.target.value;
-        const cards = document.querySelectorAll('.place-card');
 
-        cards.forEach(card => {
-            const price = parseFloat(card.dataset.price) || 0;
-            const visible = (value === 'all') || (price <= parseFloat(value));
-            card.style.display = visible ? '' : 'none';
+        document.querySelectorAll('.shelf-row').forEach(row => {
+            let anyVisible = false;
+            row.querySelectorAll('.place-card').forEach(card => {
+                const price   = parseFloat(card.dataset.price) || 0;
+                const visible = (value === 'all') || (price <= parseFloat(value));
+                card.style.display = visible ? '' : 'none';
+                if (visible) anyVisible = true;
+            });
+            // hide the whole shelf row (including the plank) if all cards are filtered out
+            row.style.display = anyVisible ? '' : 'none';
         });
     });
 }
@@ -322,6 +353,16 @@ function displayPlaceDetails(place, token, admin) {
         ? `${Number(place.latitude).toFixed(4)}, ${Number(place.longitude).toFixed(4)}`
         : 'Location unavailable';
 
+    const detailImageMap = {
+        'Maison de campagne': 'place_default.jpg',
+        'Appartement cosy':   'place_appartement.jpg',
+        'Studio moderne':     'place_studio.jpg'
+    };
+    const detailImg = detailImageMap[place.title];
+    const detailImgHtml = detailImg
+        ? `<div class="place-detail-image"><img src="${detailImg}" alt="${escapeHtml(place.title)}"></div>`
+        : '';
+
     section.innerHTML = `
         <div class="place-hero">
             <h1>${escapeHtml(place.title)}</h1>
@@ -330,6 +371,7 @@ function displayPlaceDetails(place, token, admin) {
                 <span class="price-tag">$${Number(place.price).toFixed(2)} / night</span>
             </div>
         </div>
+        ${detailImgHtml}
         <div class="place-info">
             <div class="host-info">
                 <div class="host-avatar" aria-hidden="true">${escapeHtml(ownerInitial)}</div>
