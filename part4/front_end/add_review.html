@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB &#8211; Add Review</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <a href="index.html" aria-label="HBnB home">
+                <img src="logo.png" alt="HBnB" class="logo"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='inline';">
+                <span class="logo-fallback" style="display:none;">HBnB</span>
+            </a>
+            <nav>
+                <a href="index.html" class="home-button">Home</a>
+                <a href="admin.html" id="admin-link" style="display:none;">Admin Panel</a>
+                <a href="create_place.html" id="add-place-link" class="add-place-button">✦ Add my place</a>
+                <a href="login.html" class="login-button">Login</a>
+                <a href="#" id="logout-link" class="logout-button" style="display:none;">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="auth-container" style="max-width:580px;">
+            <h1>Add a Review</h1>
+            <p class="subtitle">Share your experience with this place</p>
+
+            <form id="review-form" novalidate>
+                <div class="form-group">
+                    <label for="review-text">Your Review</label>
+                    <textarea id="review-text" name="review-text"
+                              placeholder="Describe your experience&#8230;" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="rating">Rating</label>
+                    <select id="rating" name="rating" required>
+                        <option value="">Select a rating</option>
+                        <option value="5">&#11088;&#11088;&#11088;&#11088;&#11088; Excellent (5)</option>
+                        <option value="4">&#11088;&#11088;&#11088;&#11088; Very Good (4)</option>
+                        <option value="3">&#11088;&#11088;&#11088; Good (3)</option>
+                        <option value="2">&#11088;&#11088; Fair (2)</option>
+                        <option value="1">&#11088; Poor (1)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Submit Review</button>
+                <p id="review-message" class="error-message" role="alert"></p>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-nav">
+                <a href="index.html" class="footer-link">↑ Home</a>
+                <a href="index.html#featured-section" class="footer-link">★ Featured</a>
+                <a href="index.html#places-list" class="footer-link">⬛ All Places</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 <strong>HBnB</strong>. All rights reserved.</p>
+            <p class="footer-sig">Crafted by <a href="https://github.com/Yasi-Philippe" class="footer-sig-link" target="_blank" rel="noopener noreferrer"><strong>Yasi Philippe Hübner</strong></a></p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

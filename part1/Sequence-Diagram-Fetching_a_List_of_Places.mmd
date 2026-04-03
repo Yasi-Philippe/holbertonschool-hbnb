@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant User
+    participant Interface
+    participant API
+    participant Business Logic
+    participant Database
+
+    User->>Interface: Open places list page
+    Interface->>API: Request places list
+    API->>Business Logic: Validate request
+    Business Logic->>Database: Query for all places
+    Database-->>Business Logic: Return raw places data
+    Business Logic-->>API: Return processed places list
+    API-->>Interface: Show places list
+    Interface-->>User: Display places

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB &#8211; Find your perfect place</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <a href="index.html" aria-label="HBnB home">
+                <img src="logo.png" alt="HBnB" class="logo"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='inline';">
+                <span class="logo-fallback" style="display:none;">HBnB</span>
+            </a>
+            <nav>
+                <a href="index.html" class="home-button">Home</a>
+                <a href="admin.html" id="admin-link" style="display:none;">Admin Panel</a>
+                <a href="create_place.html" id="add-place-link" class="add-place-button">✦ Add my place</a>
+                <a href="login.html" id="login-link" class="login-button">Login</a>
+                <a href="#" id="logout-link" class="logout-button" style="display:none;">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" aria-label="Welcome">
+        <div class="hero-content">
+            <h1 class="hero-title">Find your next <span class="hero-accent">getaway</span></h1>
+            <p class="hero-sub">Discover hand-picked places to stay — from cosy city apartments to countryside escapes.</p>
+            <div class="hero-cta">
+                <button class="hero-cta-btn" id="btn-featured">&#9733; Recommended for me</button>
+                <button class="hero-cta-btn hero-cta-secondary" id="btn-all-places">&#9635; Check all places</button>
+            </div>
+        </div>
+        <button class="hero-scroll-arrow" id="hero-scroll-btn" aria-label="Scroll to featured">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+    </section>
+
+    <!-- Featured places carousel -->
+    <section id="featured-section" class="featured-section" aria-label="Featured places">
+        <div class="featured-inner">
+            <p class="featured-label">Featured</p>
+            <div class="featured-stage" id="featured-stage">
+                <div class="featured-placeholder">Loading featured places&#8230;</div>
+            </div>
+            <div class="featured-controls">
+                <button class="featured-btn" id="featured-prev" aria-label="Previous place">&#8592;</button>
+                <div class="featured-dots" id="featured-dots"></div>
+                <button class="featured-btn" id="featured-next" aria-label="Next place">&#8594;</button>
+            </div>
+        </div>
+        <button class="hero-scroll-arrow featured-scroll-arrow" id="featured-scroll-btn" aria-label="Scroll to all places">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+    </section>
+
+    <main>
+        <div class="main-inner">
+            <section class="filters" aria-label="Filter places">
+                <select id="price-filter" aria-label="Filter by maximum price per night">
+                    <option value="all" selected>Filter by price</option>
+                    <option value="10">Up to $10</option>
+                    <option value="50">Up to $50</option>
+                    <option value="100">Up to $100</option>
+                    <option value="100plus">$100+</option>
+                </select>
+                <div class="filter-divider"></div>
+                <input type="search" id="keyword-filter" class="filter-search"
+                       placeholder="Search by name…" aria-label="Search places by name">
+            </section>
+
+            <section id="places-list" aria-label="Available places">
+                <div class="loading">Loading places</div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-nav">
+                <a href="index.html" class="footer-link">↑ Home</a>
+                <a href="index.html#featured-section" class="footer-link">★ Featured</a>
+                <a href="index.html#places-list" class="footer-link">⬛ All Places</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 <strong>HBnB</strong>. All rights reserved.</p>
+            <p class="footer-sig">Crafted by <a href="https://github.com/Yasi-Philippe" class="footer-sig-link" target="_blank" rel="noopener noreferrer"><strong>Yasi Philippe Hübner</strong></a></p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

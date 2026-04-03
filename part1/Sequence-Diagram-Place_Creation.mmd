@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant User
+    participant Interface
+    participant API
+    participant Business Logic
+    participant Database
+
+    User->>Interface: Open create place form
+    User->>Interface: Enter place details
+    Interface->>API: Submit create place request
+    API->>Business Logic: Validate place data
+    Business Logic->>Database: Check if place already exists
+    Database-->>Business Logic: Return existence status
+    alt Place exists
+        Business Logic-->>API: Return error (Place already exists)
+        API-->>Interface: Show error message
+    else Place does not exist
+        Business Logic->>Database: Save new place
+        Database-->>Business Logic: Confirmation
+        Business Logic-->>API: Return success
+        API-->>Interface: Show success message
+    end
+    Interface-->>User: Display creation result

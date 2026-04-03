@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant User
+    participant Interface
+    participant API
+    participant Business Logic
+    participant Database
+
+    User->>Interface: Open review form
+    User->>Interface: Enter review details
+    Interface->>API: Submit review request
+    API->>Business Logic: Validate review data
+    Business Logic->>Database: Check if user already reviewed
+    Database-->>Business Logic: Return review status
+    alt Review already exists
+        Business Logic-->>API: Return error (Review already submitted)
+        API-->>Interface: Show error message
+    else Review does not exist
+        Business Logic->>Database: Save new review
+        Database-->>Business Logic: Confirmation
+        Business Logic-->>API: Return success
+        API-->>Interface: Show success message
+    end
+    Interface-->>User: Display submission result

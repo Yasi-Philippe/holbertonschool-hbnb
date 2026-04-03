@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant User
+    participant Interface
+    participant API
+    participant Business Logic
+    participant Database
+
+    User->>Interface: Open registration form
+    User->>Interface: Enter registration details
+    Interface->>API: Submit registration request
+    API->>Business Logic: Validate data
+    Business Logic->>Database: Check if user exists
+    Database-->>Business Logic: Return user existence status
+    alt User exists
+        Business Logic-->>API: Return error (User already exists)
+        API-->>Interface: Show error message
+    else User does not exist
+        Business Logic->>Database: Save new user
+        Database-->>Business Logic: Confirmation
+        Business Logic-->>API: Return success
+        API-->>Interface: Show success message
+    end
+    Interface-->>User: Display registration result
