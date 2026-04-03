@@ -20,7 +20,7 @@
                 <span class="logo-fallback" style="display:none;">HBnB</span>
             </a>
             <nav>
-                <a href="index.html">Home</a>
+                <a href="index.html" class="home-button">Home</a>
                 <a href="admin.html" id="admin-link" style="display:none;">Admin Panel</a>
                 <a href="create_place.html" id="add-place-link" class="add-place-button">✦ Add my place</a>
                 <a href="login.html" class="login-button">Login</a>
@@ -52,7 +52,15 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 <strong>HBnB</strong>. All rights reserved.</p>
+        <div class="footer-inner">
+            <div class="footer-nav">
+                <a href="index.html" class="footer-link">↑ Home</a>
+                <a href="index.html#featured-section" class="footer-link">★ Featured</a>
+                <a href="index.html#places-list" class="footer-link">⬛ All Places</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 <strong>HBnB</strong>. All rights reserved.</p>
+            <p class="footer-sig">Crafted by <a href="https://github.com/Yasi-Philippe" class="footer-sig-link" target="_blank" rel="noopener noreferrer"><strong>Yasi Philippe Hübner</strong></a></p>
+        </div>
     </footer>
 
     <script src="scripts.js"></script>

@@ -114,6 +114,9 @@ nav {
     display: flex;
     align-items: center;
     gap: 20px;
+    min-width: 0;
+    flex-shrink: 1;
+    overflow: hidden;
 }
 
 nav a {
@@ -169,6 +172,29 @@ nav a:hover { color: var(--primary-light); }
 }
 
 .logout-button:hover {
+    border-color: var(--primary-light);
+    color: var(--primary-light) !important;
+    background: var(--primary-glow);
+}
+
+.home-button {
+    padding: 8px 20px;
+    border-radius: 22px;
+    font-family: var(--font-condensed);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: 1.5px solid rgba(255,255,255,0.50);
+    color: #ffffff !important;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.home-button:hover {
     border-color: var(--primary-light);
     color: var(--primary-light) !important;
     background: var(--primary-glow);
@@ -293,7 +319,7 @@ nav a:hover { color: var(--primary-light); }
 
 .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(72px, 13vw, 136px);
+    font-size: clamp(56px, 13vw, 136px);
     font-weight: 400; /* Bebas Neue is inherently bold */
     line-height: 0.92;
     letter-spacing: 4px;
@@ -305,7 +331,7 @@ nav a:hover { color: var(--primary-light); }
 .hero-accent {
     display: block;
     font-family: var(--font-display);
-    font-size: clamp(82px, 15vw, 160px);
+    font-size: clamp(64px, 15vw, 160px);
     letter-spacing: 8px;
     line-height: 1;
     background: linear-gradient(100deg, #9090D4 0%, #52528C 45%, #C4A0FF 100%);
@@ -316,7 +342,7 @@ nav a:hover { color: var(--primary-light); }
 
 .hero-sub {
     font-family: var(--font-body);
-    font-size: clamp(15px, 2vw, 18px);
+    font-size: clamp(14px, 2vw, 18px);
     font-weight: 300;
     color: rgba(255, 255, 255, 0.88);
     max-width: 480px;
@@ -644,14 +670,43 @@ nav a:hover { color: var(--primary-light); }
     .featured-name { font-size: 22px; }
     .featured-price { font-size: 18px; }
     .featured-quote { font-size: 13px; }
-    .hero-cta-btn { font-size: 13px; padding: 10px 20px; }
+    /* Scroll arrows — slightly smaller */
+    .hero-scroll-arrow { width: 40px; height: 40px; bottom: 22px; }
+    .hero-scroll-arrow svg { width: 22px; height: 22px; }
+    /* Hero title */
+    .hero-title { letter-spacing: 2px; }
+    .hero-accent { letter-spacing: 4px; }
+    .hero-sub { font-size: 15px; margin-top: 12px; }
+    /* Hero CTA */
+    .hero-cta { margin-top: 32px; }
+    .hero-cta-btn { flex: 0 0 190px; font-size: 13px; padding: 10px 16px; }
+    /* Keep hero bottom padding tall enough to clear the arrow */
+    .hero { padding-bottom: 76px; }
+}
+
+@media (max-width: 639px) {
+    /* Scroll arrows — smaller still */
+    .hero-scroll-arrow { width: 34px; height: 34px; bottom: 18px; }
+    .hero-scroll-arrow svg { width: 18px; height: 18px; }
+    /* Hero title */
+    .hero-sub { font-size: 14px; margin-top: 10px; line-height: 1.6; }
+    /* Hero CTA */
+    .hero-cta { margin-top: 26px; gap: 10px; }
+    .hero-cta-btn { flex: 1 1 0; min-width: 0; max-width: 175px; font-size: 12px; padding: 9px 12px; }
+    .hero { padding-bottom: 64px; }
 }
 
 @media (max-width: 479px) {
     .featured-quote { display: none; }
-    .hero-cta { gap: 10px; margin-top: 28px; }
-    .hero-cta-btn { flex: 0 0 160px; font-size: 11px; padding: 8px 10px; }
-    .hero-cta-btn { font-size: 11px; padding: 8px 16px; }
+    /* Scroll arrows — compact */
+    .hero-scroll-arrow { width: 30px; height: 30px; bottom: 14px; }
+    .hero-scroll-arrow svg { width: 16px; height: 16px; }
+    /* Hero title */
+    .hero-sub { font-size: 13px; margin-top: 8px; line-height: 1.5; }
+    /* Hero CTA */
+    .hero-cta { margin-top: 20px; gap: 8px; }
+    .hero-cta-btn { flex: 1 1 0; min-width: 0; max-width: 160px; font-size: 11px; padding: 8px 10px; letter-spacing: 0.5px; }
+    .hero { padding-bottom: 56px; }
 }
 
 /* ---- Main -------------------------------------------------- */
@@ -905,7 +960,7 @@ main {
 /* ---- Auth / form container -------------------------------- */
 .auth-container {
     max-width: 440px;
-    margin: 56px auto;
+    margin: calc(var(--header-h) + 40px) auto 56px;
     background: var(--surface);
     border-radius: var(--radius-lg);
     padding: 44px 40px;
@@ -1326,18 +1381,86 @@ footer {
     background: #000000;
     border-top: 1px solid var(--border-dark);
     color: var(--text-light);
-    text-align: center;
-    padding: 28px 24px;
+    padding: 36px 24px 28px;
     font-family: var(--font-condensed);
-    font-size: 15px;
-    letter-spacing: 1px;
     margin-top: auto;
 }
 
-footer strong { color: var(--primary-light); }
+.footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+}
+
+.footer-nav {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-link {
+    padding: 7px 18px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(255,255,255,0.22);
+    color: var(--text-medium) !important;
+    font-family: var(--font-condensed);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    white-space: nowrap;
+}
+
+.footer-link:hover {
+    border-color: var(--primary-light);
+    color: var(--primary-light) !important;
+    background: var(--primary-glow);
+}
+
+.footer-copy {
+    font-size: 14px;
+    letter-spacing: 0.8px;
+    color: var(--text-light);
+}
+
+.footer-copy strong { color: var(--primary-light); }
+
+.footer-sig {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: rgba(255,255,255,0.30);
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-style: italic;
+}
+
+.footer-sig strong {
+    color: rgba(255,255,255,0.50);
+    font-weight: 600;
+    font-style: normal;
+}
+
+.footer-sig-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-sig-link:hover strong {
+    color: var(--primary-light);
+}
 
 /* ---- Admin panel ----------------------------------------- */
-.admin-header { margin-bottom: 32px; }
+.admin-header {
+    margin-bottom: 32px;
+    padding-top: calc(var(--header-h) + 32px);
+}
 
 .admin-header h1 {
     font-family: var(--font-display);
@@ -1357,18 +1480,20 @@ footer strong { color: var(--primary-light); }
 /* Legacy — kept for any other use */
 .admin-grid {
     display: grid;
-    grid-template-columns: minmax(260px, 360px) 1fr;
+    grid-template-columns: minmax(0, 360px) 1fr;
     gap: 24px;
     margin-bottom: 32px;
     align-items: start;
+    min-width: 0;
 }
 
 /* New two-column master layout */
 .admin-master-grid {
     display: grid;
-    grid-template-columns: minmax(260px, 360px) 1fr;
+    grid-template-columns: minmax(0, 360px) 1fr;
     gap: 24px;
     align-items: start;
+    min-width: 0;
 }
 
 .admin-forms-col,
@@ -1376,6 +1501,7 @@ footer strong { color: var(--primary-light); }
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-width: 0;
 }
 
 .admin-section {
@@ -1385,6 +1511,9 @@ footer strong { color: var(--primary-light); }
     border: 1px solid var(--border-dark);
     box-shadow: var(--shadow);
     margin-bottom: 32px;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .admin-section h2 {
@@ -1713,7 +1842,7 @@ body { overflow-x: clip; }
     .logo { height: 34px; }
     .logo-fallback { font-size: 26px; letter-spacing: 4px; }
     nav { gap: 16px; }
-    .login-button, .logout-button, .add-place-button, #admin-link {
+    .login-button, .logout-button, .home-button, .add-place-button, #admin-link {
         font-size: 13px !important;
         padding: 6px 16px !important;
         min-height: 38px !important;
@@ -1739,13 +1868,15 @@ body { overflow-x: clip; }
     .logo { height: 26px; }
     .logo-fallback { font-size: 22px; letter-spacing: 3px; }
     nav { gap: 10px; }
-    nav a:not(.login-button):not(.logout-button):not(.add-place-button) { font-size: 12px; }
-    .login-button, .logout-button, .add-place-button, #admin-link {
+    nav a:not(.login-button):not(.logout-button):not(.home-button):not(.add-place-button) { font-size: 12px; }
+    .login-button, .logout-button, .home-button, .add-place-button, #admin-link {
         font-size: 11px !important;
         padding: 4px 12px !important;
         min-height: 30px !important;
         letter-spacing: 0.6px !important;
         border-radius: 16px !important;
+        flex-shrink: 1 !important;
+        min-width: 0 !important;
     }
     /* Layout */
     .main-inner { padding: 20px 16px; }
@@ -1776,13 +1907,15 @@ body { overflow-x: clip; }
     .header-container { height: 38px; padding: 0 12px; }
     .logo { height: 22px; }
     .logo-fallback { font-size: 18px; letter-spacing: 2px; }
-    nav { gap: 8px; }
-    .login-button, .logout-button, .add-place-button, #admin-link {
+    nav { gap: 6px; }
+    .login-button, .logout-button, .home-button, .add-place-button, #admin-link {
         font-size: 10px !important;
-        padding: 3px 9px !important;
+        padding: 3px 8px !important;
         min-height: 26px !important;
-        letter-spacing: 0.3px !important;
+        letter-spacing: 0 !important;
         border-radius: 13px !important;
+        flex-shrink: 1 !important;
+        min-width: 0 !important;
     }
     /* Layout */
     .place-card { flex: 0 0 calc(100% - 0px); margin: 8px 0; }
@@ -1802,29 +1935,42 @@ body { overflow-x: clip; }
     .header-container { height: 34px; padding: 0 10px; }
     .logo { height: 19px; }
     .logo-fallback { font-size: 16px; letter-spacing: 1px; }
-    nav { gap: 6px; }
-    nav a:not(.login-button):not(.logout-button):not(.add-place-button) { display: none; }
-    .login-button, .logout-button, .add-place-button, #admin-link {
-        font-size: 9px !important;
-        padding: 3px 7px !important;
-        min-height: 22px !important;
+    nav { gap: 4px; }
+    nav a:not(.login-button):not(.logout-button):not(.home-button):not(.add-place-button) { display: none; }
+    .login-button, .logout-button, .home-button, .add-place-button, #admin-link {
+        font-size: 8px !important;
+        padding: 2px 6px !important;
+        min-height: 20px !important;
         letter-spacing: 0 !important;
-        border-radius: 11px !important;
+        border-radius: 10px !important;
         box-shadow: none !important;
+        flex-shrink: 1 !important;
+        min-width: 0 !important;
     }
     /* Layout */
     .main-inner { padding: 16px 12px; }
     #places-list.is-filtered .place-card { flex: 0 0 calc(100% - 16px); margin: 8px 0; }
-    .hero { padding: calc(var(--header-h) + 20px) 12px 76px; }
+    .hero { padding-left: 12px; padding-right: 12px; padding-top: calc(var(--header-h) + 20px); }
     .place-hero { padding: 24px 16px; }
     .place-hero h1 { font-size: 22px; }
     .place-info { padding: 18px 16px; }
     .auth-container { margin: 16px 12px; padding: 24px 18px; border-radius: var(--radius); }
     .auth-container h1 { font-size: 28px; }
     .btn-primary { font-size: 16px; padding: 13px; }
-    footer { padding: 20px 16px; font-size: 13px; }
-    .admin-header h1 { font-size: 32px; }
+    footer { padding: 24px 16px 20px; }
+    .footer-nav { gap: 8px; }
+    .footer-link { font-size: 11px; padding: 5px 12px; }
+    .admin-header h1 { font-size: 28px; letter-spacing: 1px; }
+    .admin-header p { font-size: 12px; }
     .admin-form-row { grid-template-columns: 1fr; }
+    .admin-section { padding: 14px 12px; }
+    .admin-section h2 { font-size: 15px; }
+    .admin-form .form-group input,
+    .admin-form .form-group select { padding: 7px 10px; font-size: 13px; }
+    .admin-table th { font-size: 10px; padding: 6px 7px; }
+    .admin-table td { font-size: 11px; padding: 8px 7px; }
+    .btn-sm { font-size: 10px; padding: 4px 8px; min-height: 24px; }
+    .admin-tip { font-size: 11px; padding: 10px 12px; }
 }
 
 /* ── 360 px ──────────────────────────────────────────────── */
@@ -1834,9 +1980,20 @@ body { overflow-x: clip; }
     .logo { height: 16px; }
     .logo-fallback { font-size: 14px; letter-spacing: 0px; }
     nav { gap: 4px; }
-    .login-button, .logout-button, .add-place-button, #admin-link {
-        font-size: 8px !important;
-        padding: 2px 6px !important;
-        min-height: 20px !important;
+    .login-button, .logout-button, .home-button, .add-place-button, #admin-link {
+        font-size: 7px !important;
+        padding: 2px 5px !important;
+        min-height: 18px !important;
+        flex-shrink: 1 !important;
+        min-width: 0 !important;
     }
+    .admin-header h1 { font-size: 24px; letter-spacing: 0px; }
+    .admin-section { padding: 10px 10px; }
+    .admin-table th { font-size: 9px; padding: 5px 6px; }
+    .admin-table td { font-size: 10px; padding: 6px 6px; }
+    .btn-sm { font-size: 9px; padding: 3px 6px; min-height: 20px; }
+    /* Hero */
+    .hero-sub { font-size: 12px; margin-top: 6px; }
+    .hero-cta { gap: 6px; margin-top: 16px; }
+    .hero-cta-btn { font-size: 10px; padding: 7px 8px; letter-spacing: 0.3px; }
 }
