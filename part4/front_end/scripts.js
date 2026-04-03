@@ -30,6 +30,27 @@ const PLACE_IMAGES = {
     'Castle':                           'castle.jpg',
 };
 
+/* ---- Images used in the hero background slideshow --------- */
+const SLIDESHOW_IMAGES = [
+    'place_default.jpg',
+    'place_appartement.jpg',
+    'place_studio.jpg',
+    'Villa Provençale en lavande.jpg',
+    'alpine chalet snow mountains.jpg',
+    'treehouse forest france.jpg',
+    'haussmann apartment paris moldings.jpg',
+    'mediterranean seaside villa infinity pool.jpg',
+    'paris houseboat seine river.jpg',
+    'bordeaux bastide vineyard.jpg',
+    'corsica mountain farmhouse.jpg',
+    'nice belle epoque balcony sea.jpg',
+    'tuscany villa olive trees pool.jpg',
+    'tiny house forest france.jpg',
+    'new york loft style terrace.jpg',
+    'arctic luxury igloo northern lights.jpg',
+    'castle.jpg',
+];
+
 /* ============================================================
    UTILITIES
    ============================================================ */
@@ -198,27 +219,147 @@ function setupIndexPage() {
     updateNavLinks();
     fetchPlaces(token);
     setupPriceFilter();
+    setupKeywordFilter();
     setupHeroSlideshow();
     setupHeroFade();
     setupScrollFadeIn();
     setupHeroScrollArrow();
+    setupHeroCTAButtons();
+    setupFeaturedSection();
 }
 
 function setupHeroScrollArrow() {
     const btn = document.getElementById('hero-scroll-btn');
     if (!btn) return;
     btn.addEventListener('click', () => {
-        const target = document.getElementById('places-list');
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('featured-section')?.scrollIntoView({ behavior: 'smooth' });
     });
+}
+
+function setupHeroCTAButtons() {
+    document.getElementById('btn-featured')?.addEventListener('click', () => {
+        document.getElementById('featured-section')?.scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('btn-all-places')?.addEventListener('click', () => {
+        document.getElementById('places-list')?.scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('featured-scroll-btn')?.addEventListener('click', () => {
+        document.querySelector('main')?.scrollIntoView({ behavior: 'smooth' });
+    });
+}
+
+async function setupFeaturedSection() {
+    const stage   = document.getElementById('featured-stage');
+    const dotsEl  = document.getElementById('featured-dots');
+    if (!stage) return;
+
+    /* Wait up to 3 s for fetchPlaces() to populate window._allPlaces */
+    if (!window._allPlaces) {
+        await new Promise(resolve => {
+            const t0 = Date.now();
+            const poll = setInterval(() => {
+                if (window._allPlaces || Date.now() - t0 > 3000) {
+                    clearInterval(poll);
+                    resolve();
+                }
+            }, 100);
+        });
+    }
+    const places = window._allPlaces || [];
+
+    /* Pick places that have a dedicated (non-default) image, shuffle, take up to 6 */
+    const candidates = places.filter(p =>
+        PLACE_IMAGES[p.title] && PLACE_IMAGES[p.title] !== 'place_default.jpg'
+    );
+    for (let i = candidates.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+    }
+    const featured = candidates.slice(0, 6);
+
+    if (featured.length === 0) {
+        stage.innerHTML = '<div class="featured-placeholder">No featured places available.</div>';
+        return;
+    }
+
+    /* Fetch full details (amenities + reviews) for each featured place */
+    const details = await Promise.all(
+        featured.map(p =>
+            fetch(`${API_URL}/api/v1/places/${p.id}`)
+                .then(r => r.ok ? r.json() : { ...p, reviews: [], amenities: [] })
+                .catch(() => ({ ...p, reviews: [], amenities: [] }))
+        )
+    );
+
+    /* Build cards */
+    stage.innerHTML = '';
+    details.forEach((place, i) => {
+        const reviews   = (place.reviews || []).slice().sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        const topReview = reviews[0];
+        const amenities = (place.amenities || []).slice(0, 5).map(a => a.name || a).join(', ');
+        const img       = PLACE_IMAGES[place.title] || 'place_default.jpg';
+
+        const card = document.createElement('div');
+        card.className = 'featured-card' + (i === 0 ? ' active' : '');
+        card.innerHTML = `
+            <img src="${img}" alt="${escapeHtml(place.title)}" class="featured-img">
+            <div class="featured-overlay">
+                ${topReview ? `<blockquote class="featured-quote">"${escapeHtml(topReview.text)}"</blockquote>` : ''}
+                <div class="featured-meta">
+                    <span class="featured-name">${escapeHtml(place.title)}</span>
+                    <span class="featured-price">$${Number(place.price || 0).toFixed(0)}<span class="featured-night"> / night</span></span>
+                </div>
+                ${amenities ? `<div class="featured-amenities"><span class="featured-includes">Includes:</span> ${escapeHtml(amenities)}</div>` : ''}
+                <a href="place.html?id=${encodeURIComponent(place.id)}" class="featured-cta">View Place &#8594;</a>
+            </div>`;
+        stage.appendChild(card);
+    });
+
+    /* Build dots */
+    dotsEl.innerHTML = '';
+    details.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'featured-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', `Featured place ${i + 1}`);
+        dotsEl.appendChild(dot);
+    });
+
+    const cards = Array.from(stage.querySelectorAll('.featured-card'));
+    const dots  = Array.from(dotsEl.querySelectorAll('.featured-dot'));
+    let current = 0;
+    let timer   = setInterval(() => goTo((current + 1) % cards.length, true), 5000);
+
+    function goTo(idx, forward = true) {
+        if (idx === current) return;
+        clearInterval(timer);
+
+        const outgoing = cards[current];
+        outgoing.classList.add(forward ? 'exit-left' : 'exit-right');
+        outgoing.classList.remove('active');
+        dots[current].classList.remove('active');
+        setTimeout(() => outgoing.classList.remove('exit-left', 'exit-right'), 500);
+
+        current = idx;
+        cards[current].classList.add('active');
+        dots[current].classList.add('active');
+        timer = setInterval(() => goTo((current + 1) % cards.length, true), 5000);
+    }
+
+    dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i, i > current)));
+    document.getElementById('featured-prev')?.addEventListener('click', () =>
+        goTo((current - 1 + cards.length) % cards.length, false)
+    );
+    document.getElementById('featured-next')?.addEventListener('click', () =>
+        goTo((current + 1) % cards.length, true)
+    );
 }
 
 function setupHeroSlideshow() {
     const hero = document.querySelector('.hero');
     if (!hero) return;
 
-    /* Build shuffled list of images from the shared map */
-    const images = Object.values(PLACE_IMAGES).filter(Boolean);
+    /* Build shuffled copy of the curated slideshow list */
+    const images = [...SLIDESHOW_IMAGES];
     for (let i = images.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [images[i], images[j]] = [images[j], images[i]];
@@ -244,9 +385,27 @@ function setupHeroSlideshow() {
     imgEls[0].classList.add('active');
 
     setInterval(() => {
-        imgEls[current].classList.remove('active');
+        const outgoing = imgEls[current];
+
+        /* Freeze the live transform so the fade-out doesn't snap back */
+        const frozenTransform = window.getComputedStyle(outgoing).transform;
+        outgoing.style.transform = frozenTransform;
+        outgoing.style.animation = 'none';
+        outgoing.classList.remove('active');
+
+        /* After the opacity transition finishes, reset the inline styles
+           so the image is clean if it cycles back into view */
+        setTimeout(() => {
+            outgoing.style.transform = '';
+            outgoing.style.animation = '';
+        }, 2400); /* slightly longer than the 2.2s opacity transition */
+
         current = (current + 1) % imgEls.length;
-        imgEls[current].classList.add('active');
+        const incoming = imgEls[current];
+        /* Clear any leftover inline styles in case this image was outgoing before */
+        incoming.style.transform = '';
+        incoming.style.animation = '';
+        incoming.classList.add('active');
     }, 6000);
 }
 
@@ -372,26 +531,44 @@ function displayPlaces(places) {
     }
 }
 
+function applyFilters() {
+    const priceVal   = document.getElementById('price-filter')?.value || 'all';
+    const keyword    = (document.getElementById('keyword-filter')?.value || '').toLowerCase().trim();
+    const isFiltered = priceVal !== 'all' || keyword !== '';
+
+    document.querySelectorAll('.shelf-row').forEach(row => {
+        let anyVisible = false;
+        row.querySelectorAll('.place-card').forEach(card => {
+            const price = parseFloat(card.dataset.price) || 0;
+            const title = (card.querySelector('h3')?.textContent || '').toLowerCase();
+
+            const priceOk   = priceVal === 'all'
+                || (priceVal === '100plus' ? price > 100 : price <= parseFloat(priceVal));
+            const keywordOk = !keyword || title.includes(keyword);
+
+            const visible = priceOk && keywordOk;
+            card.style.display = visible ? '' : 'none';
+            if (visible) anyVisible = true;
+        });
+        // In normal mode hide empty rows; in filtered mode CSS handles layout via display:contents
+        row.style.display = isFiltered ? '' : (anyVisible ? '' : 'none');
+    });
+
+    // Toggle flat-layout mode so visible cards reflow into clean rows of 3
+    const placesList = document.getElementById('places-list');
+    if (placesList) placesList.classList.toggle('is-filtered', isFiltered);
+}
+
 function setupPriceFilter() {
     const filter = document.getElementById('price-filter');
     if (!filter) return;
+    filter.addEventListener('change', applyFilters);
+}
 
-    filter.addEventListener('change', (event) => {
-        const value = event.target.value;
-
-        document.querySelectorAll('.shelf-row').forEach(row => {
-            let anyVisible = false;
-            row.querySelectorAll('.place-card').forEach(card => {
-                const price   = parseFloat(card.dataset.price) || 0;
-                const visible = (value === 'all')
-                || (value === '100plus' ? price > 100 : price <= parseFloat(value));
-                card.style.display = visible ? '' : 'none';
-                if (visible) anyVisible = true;
-            });
-            // hide the whole shelf row (including the plank) if all cards are filtered out
-            row.style.display = anyVisible ? '' : 'none';
-        });
-    });
+function setupKeywordFilter() {
+    const input = document.getElementById('keyword-filter');
+    if (!input) return;
+    input.addEventListener('input', applyFilters);
 }
 
 /* ============================================================
@@ -1121,6 +1298,8 @@ function setupCreatePlaceForm(token) {
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname;
 
+    setupHeaderHideOnScroll();
+
     if (path.includes('login.html')) {
         setupLoginPage();
     } else if (path.includes('admin.html')) {
@@ -1136,3 +1315,18 @@ document.addEventListener('DOMContentLoaded', () => {
         setupIndexPage();
     }
 });
+
+function setupHeaderHideOnScroll() {
+    const header = document.querySelector('header');
+    if (!header) return;
+    let lastY = window.scrollY;
+    window.addEventListener('scroll', () => {
+        const currentY = window.scrollY;
+        if (currentY > lastY && currentY > 80) {
+            header.classList.add('header-hidden');
+        } else {
+            header.classList.remove('header-hidden');
+        }
+        lastY = currentY;
+    }, { passive: true });
+}

@@ -34,8 +34,30 @@
         <div class="hero-content">
             <h1 class="hero-title">Find your next <span class="hero-accent">getaway</span></h1>
             <p class="hero-sub">Discover hand-picked places to stay — from cosy city apartments to countryside escapes.</p>
+            <div class="hero-cta">
+                <button class="hero-cta-btn" id="btn-featured">&#9733; Recommended for me</button>
+                <button class="hero-cta-btn hero-cta-secondary" id="btn-all-places">&#9635; Check all places</button>
+            </div>
         </div>
-        <button class="hero-scroll-arrow" id="hero-scroll-btn" aria-label="Scroll to places">
+        <button class="hero-scroll-arrow" id="hero-scroll-btn" aria-label="Scroll to featured">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+    </section>
+
+    <!-- Featured places carousel -->
+    <section id="featured-section" class="featured-section" aria-label="Featured places">
+        <div class="featured-inner">
+            <p class="featured-label">Featured</p>
+            <div class="featured-stage" id="featured-stage">
+                <div class="featured-placeholder">Loading featured places&#8230;</div>
+            </div>
+            <div class="featured-controls">
+                <button class="featured-btn" id="featured-prev" aria-label="Previous place">&#8592;</button>
+                <div class="featured-dots" id="featured-dots"></div>
+                <button class="featured-btn" id="featured-next" aria-label="Next place">&#8594;</button>
+            </div>
+        </div>
+        <button class="hero-scroll-arrow featured-scroll-arrow" id="featured-scroll-btn" aria-label="Scroll to all places">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
     </section>
@@ -43,14 +65,16 @@
     <main>
         <div class="main-inner">
             <section class="filters" aria-label="Filter places">
-                <label for="price-filter">Max price per night:</label>
                 <select id="price-filter" aria-label="Filter by maximum price per night">
-                    <option value="all" selected>All prices</option>
+                    <option value="all" selected>Filter by price</option>
                     <option value="10">Up to $10</option>
                     <option value="50">Up to $50</option>
                     <option value="100">Up to $100</option>
                     <option value="100plus">$100+</option>
                 </select>
+                <div class="filter-divider"></div>
+                <input type="search" id="keyword-filter" class="filter-search"
+                       placeholder="Search by name…" aria-label="Search places by name">
             </section>
 
             <section id="places-list" aria-label="Available places">

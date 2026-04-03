@@ -36,139 +36,169 @@
                 <p>Manage users, amenities, and places.</p>
             </div>
 
-            <!-- User Management -->
-            <div class="admin-grid">
-                <div class="admin-section">
-                    <h2>Create New User</h2>
-                    <form id="create-user-form" class="admin-form" novalidate>
-                        <div class="admin-form-row">
-                            <div class="form-group">
-                                <label for="new-user-fn">First Name</label>
-                                <input type="text" id="new-user-fn" placeholder="Alice" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="new-user-ln">Last Name</label>
-                                <input type="text" id="new-user-ln" placeholder="Smith" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="new-user-email">Email Address</label>
-                            <input type="email" id="new-user-email" placeholder="alice@example.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="new-user-pw">Password</label>
-                            <input type="password" id="new-user-pw" placeholder="Choose a password"
-                                   required autocomplete="new-password">
-                        </div>
-                        <button type="submit" class="btn-primary">Create User</button>
-                        <p id="create-user-msg" class="error-message" role="alert"></p>
-                    </form>
-                </div>
+            <div class="admin-master-grid">
 
-                <div class="admin-section">
-                    <h2>All Users</h2>
-                    <div class="admin-table-wrapper">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="users-tbody">
-                                <tr><td colspan="4" style="text-align:center;color:var(--text-light);">Loading&#8230;</td></tr>
-                            </tbody>
-                        </table>
+                <!-- LEFT: all create forms stacked -->
+                <div class="admin-forms-col">
+
+                    <div class="admin-section">
+                        <h2>Create New User</h2>
+                        <form id="create-user-form" class="admin-form" novalidate>
+                            <div class="admin-form-row">
+                                <div class="form-group">
+                                    <label for="new-user-fn">First Name</label>
+                                    <input type="text" id="new-user-fn" placeholder="Alice" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-user-ln">Last Name</label>
+                                    <input type="text" id="new-user-ln" placeholder="Smith" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-user-email">Email Address</label>
+                                <input type="email" id="new-user-email" placeholder="alice@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-user-pw">Password</label>
+                                <input type="password" id="new-user-pw" placeholder="Choose a password"
+                                       required autocomplete="new-password">
+                            </div>
+                            <button type="submit" class="btn-primary">Create User</button>
+                            <p id="create-user-msg" class="error-message" role="alert"></p>
+                        </form>
+                        <div class="admin-tip">
+                            <span class="admin-tip-title">Quick notes</span>
+                            <ul>
+                                <li>New users can log in immediately after creation.</li>
+                                <li>Admin rights cannot be set here — edit the DB directly.</li>
+                                <li>Email addresses must be unique across all accounts.</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Amenity Management -->
-            <div class="admin-grid">
-                <div class="admin-section">
-                    <h2>Create New Amenity</h2>
-                    <form id="create-amenity-form" class="admin-form" novalidate>
-                        <div class="form-group">
-                            <label for="new-amenity-name">Amenity Name</label>
-                            <input type="text" id="new-amenity-name"
-                                   placeholder="e.g. WiFi, Pool, Parking&#8230;" required>
-                        </div>
-                        <button type="submit" class="btn-primary">Create Amenity</button>
-                        <p id="create-amenity-msg" class="error-message" role="alert"></p>
-                    </form>
-                </div>
-
-                <div class="admin-section">
-                    <h2>All Amenities</h2>
-                    <div class="admin-table-wrapper">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="amenities-tbody">
-                                <tr><td colspan="2" style="text-align:center;color:var(--text-light);">Loading&#8230;</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Place Management -->
-            <div class="admin-grid">
-                <div class="admin-section">
-                    <h2>Create New Place</h2>
-                    <form id="create-place-form" class="admin-form" novalidate>
-                        <div class="form-group">
-                            <label for="new-place-title">Title</label>
-                            <input type="text" id="new-place-title" placeholder="e.g. Cosy mountain cabin" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="new-place-desc">Description</label>
-                            <input type="text" id="new-place-desc" placeholder="Short description">
-                        </div>
-                        <div class="admin-form-row">
+                    <div class="admin-section">
+                        <h2>Create New Amenity</h2>
+                        <form id="create-amenity-form" class="admin-form" novalidate>
                             <div class="form-group">
-                                <label for="new-place-price">Price / night ($)</label>
-                                <input type="number" id="new-place-price" placeholder="e.g. 75" min="0" step="0.01" required>
+                                <label for="new-amenity-name">Amenity Name</label>
+                                <input type="text" id="new-amenity-name"
+                                       placeholder="e.g. WiFi, Pool, Parking&#8230;" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Create Amenity</button>
+                            <p id="create-amenity-msg" class="error-message" role="alert"></p>
+                        </form>
+                        <div class="admin-tip">
+                            <span class="admin-tip-title">Quick notes</span>
+                            <ul>
+                                <li>Amenity names are shared across all places.</li>
+                                <li>Keep names short — one or two words is ideal.</li>
+                                <li>Duplicates are case-sensitive, so avoid near-copies.</li>
+                                <li>Deleting an amenity removes it from every place that has it.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h2>Create New Place</h2>
+                        <form id="create-place-form" class="admin-form" novalidate>
+                            <div class="form-group">
+                                <label for="new-place-title">Title</label>
+                                <input type="text" id="new-place-title" placeholder="e.g. Cosy mountain cabin" required>
                             </div>
                             <div class="form-group">
-                                <label for="new-place-lat">Latitude</label>
-                                <input type="number" id="new-place-lat" placeholder="e.g. 48.8566" step="any" required>
+                                <label for="new-place-desc">Description</label>
+                                <input type="text" id="new-place-desc" placeholder="Short description">
                             </div>
+                            <div class="admin-form-row">
+                                <div class="form-group">
+                                    <label for="new-place-price">Price / night ($)</label>
+                                    <input type="number" id="new-place-price" placeholder="e.g. 75" min="0" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-place-lat">Latitude</label>
+                                    <input type="number" id="new-place-lat" placeholder="e.g. 48.8566" step="any" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-place-lng">Longitude</label>
+                                <input type="number" id="new-place-lng" placeholder="e.g. 2.3522" step="any" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Create Place</button>
+                            <p id="create-place-msg" class="error-message" role="alert"></p>
+                        </form>
+                        <div class="admin-tip">
+                            <span class="admin-tip-title">Quick notes</span>
+                            <ul>
+                                <li>New places are owned by the currently logged-in admin.</li>
+                                <li>Latitude: –90 to 90 &nbsp;·&nbsp; Longitude: –180 to 180.</li>
+                                <li>Price is in USD per night.</li>
+                            </ul>
                         </div>
-                        <div class="form-group">
-                            <label for="new-place-lng">Longitude</label>
-                            <input type="number" id="new-place-lng" placeholder="e.g. 2.3522" step="any" required>
-                        </div>
-                        <button type="submit" class="btn-primary">Create Place</button>
-                        <p id="create-place-msg" class="error-message" role="alert"></p>
-                    </form>
-                </div>
-
-                <div class="admin-section">
-                    <h2>All Places</h2>
-                    <div class="admin-table-wrapper">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Price / night</th>
-                                    <th>Owner</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="places-admin-tbody">
-                                <tr><td colspan="4" style="text-align:center;color:var(--text-light);">Loading&#8230;</td></tr>
-                            </tbody>
-                        </table>
                     </div>
-                </div>
-            </div>
+
+                </div><!-- /admin-forms-col -->
+
+                <!-- RIGHT: all tables stacked -->
+                <div class="admin-tables-col">
+
+                    <div class="admin-section">
+                        <h2>All Users</h2>
+                        <div class="admin-table-wrapper">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-tbody">
+                                    <tr><td colspan="4" style="text-align:center;color:var(--text-light);">Loading&#8230;</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h2>All Amenities</h2>
+                        <div class="admin-table-wrapper">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="amenities-tbody">
+                                    <tr><td colspan="2" style="text-align:center;color:var(--text-light);">Loading&#8230;</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h2>All Places</h2>
+                        <div class="admin-table-wrapper">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Price / night</th>
+                                        <th>Owner</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="places-admin-tbody">
+                                    <tr><td colspan="4" style="text-align:center;color:var(--text-light);">Loading&#8230;</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div><!-- /admin-tables-col -->
+
+            </div><!-- /admin-master-grid -->
         </div>
     </main>
 
