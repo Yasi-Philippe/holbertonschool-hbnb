@@ -141,23 +141,59 @@ function isAdminUser() {
  * Call once at the start of every page setup function.
  */
 function updateNavLinks() {
-    const token      = getCookie('token');
-    const loginLink  = document.getElementById('login-link');
-    const logoutLink = document.getElementById('logout-link');
-    const adminLink  = document.getElementById('admin-link');
-
+    const token        = getCookie('token');
+    const loginLink    = document.getElementById('login-link');
+    const adminLink    = document.getElementById('admin-link');
     const addPlaceLink = document.getElementById('add-place-link');
-    if (loginLink)  loginLink.style.display  = token ? 'none'  : '';
+    const greeting     = document.getElementById('user-greeting');
+
+    if (loginLink)    loginLink.style.display    = token ? 'none' : '';
     if (addPlaceLink) addPlaceLink.style.display = token ? 'inline-flex' : 'none';
-    if (logoutLink) {
-        logoutLink.style.display = token ? 'flex' : 'none';
-        logoutLink.addEventListener('click', (e) => {
-            e.preventDefault();
+    if (adminLink)    adminLink.style.display    = isAdminUser() ? 'flex' : 'none';
+
+    if (!greeting) return;
+
+    if (!token) {
+        greeting.style.display = 'none';
+        return;
+    }
+
+    // Show the greeting wrapper and wire up the dropdown
+    greeting.style.display = 'inline-flex';
+
+    // Toggle dropdown on click
+    greeting.addEventListener('click', (e) => {
+        e.stopPropagation();
+        greeting.classList.toggle('open');
+    });
+
+    // Close dropdown when clicking anywhere else
+    document.addEventListener('click', () => greeting.classList.remove('open'), { once: false });
+
+    // Logout button inside dropdown
+    const logoutBtn = greeting.querySelector('.nav-dropdown-logout');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
             window.location.href = 'index.html';
         });
     }
-    if (adminLink)  adminLink.style.display  = isAdminUser() ? 'flex' : 'none';
+
+    // Fetch and display the user's first name
+    const claims = decodeJWT(token);
+    const userId = claims && claims.sub;
+    if (userId) {
+        fetch(`${API_URL}/api/v1/users/${userId}`)
+            .then(r => r.ok ? r.json() : null)
+            .then(user => {
+                if (user && user.first_name) {
+                    const nameEl = greeting.querySelector('.nav-user-name');
+                    if (nameEl) nameEl.textContent = user.first_name;
+                }
+            })
+            .catch(() => {});
+    }
 }
 
 /** @deprecated use updateNavLinks() */

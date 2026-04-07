@@ -116,7 +116,7 @@ nav {
     gap: 20px;
     min-width: 0;
     flex-shrink: 1;
-    overflow: hidden;
+    overflow: visible;
 }
 
 nav a {
@@ -175,6 +175,86 @@ nav a:hover { color: var(--primary-light); }
     border-color: var(--primary-light);
     color: var(--primary-light) !important;
     background: var(--primary-glow);
+}
+
+/* ---- Logged-in user greeting + dropdown ------------------- */
+.nav-user-greeting {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 22px;
+    border: 1.5px solid rgba(123,123,196,0.45);
+    font-family: var(--font-condensed);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--primary-light);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.2s, background 0.2s;
+    min-height: 30px;
+}
+
+.nav-user-greeting:hover {
+    border-color: var(--primary-light);
+    background: var(--primary-glow);
+}
+
+.nav-user-name::before {
+    content: '👤 ';
+}
+
+.nav-user-caret {
+    font-size: 10px;
+    opacity: 0.7;
+    transition: transform 0.2s;
+}
+
+.nav-user-greeting.open .nav-user-caret {
+    transform: rotate(180deg);
+}
+
+.nav-user-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 140px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.55);
+    z-index: 200;
+    overflow: hidden;
+}
+
+.nav-user-greeting.open .nav-user-dropdown {
+    display: block;
+}
+
+.nav-dropdown-logout {
+    width: 100%;
+    padding: 11px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    font-family: var(--font-condensed);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--danger);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.nav-dropdown-logout:hover {
+    background: rgba(224,82,82,0.12);
+    color: #FF8080;
 }
 
 .home-button {
@@ -1908,6 +1988,7 @@ body { overflow-x: clip; }
     .logo { height: 22px; }
     .logo-fallback { font-size: 18px; letter-spacing: 2px; }
     nav { gap: 6px; }
+    .nav-user-greeting { font-size: 10px !important; padding: 3px 8px !important; min-height: 26px !important; gap: 3px !important; }
     .login-button, .logout-button, .home-button, .add-place-button, #admin-link {
         font-size: 10px !important;
         padding: 3px 8px !important;
@@ -1937,6 +2018,7 @@ body { overflow-x: clip; }
     .logo-fallback { font-size: 16px; letter-spacing: 1px; }
     nav { gap: 4px; }
     nav a:not(.login-button):not(.logout-button):not(.home-button):not(.add-place-button) { display: none; }
+    .nav-user-greeting { font-size: 8px !important; padding: 2px 7px !important; min-height: 20px !important; gap: 3px !important; }
     .login-button, .logout-button, .home-button, .add-place-button, #admin-link {
         font-size: 8px !important;
         padding: 2px 6px !important;
@@ -1987,6 +2069,7 @@ body { overflow-x: clip; }
         flex-shrink: 1 !important;
         min-width: 0 !important;
     }
+    .nav-user-greeting { font-size: 7px !important; padding: 2px 5px !important; min-height: 18px !important; }
     .admin-header h1 { font-size: 24px; letter-spacing: 0px; }
     .admin-section { padding: 10px 10px; }
     .admin-table th { font-size: 9px; padding: 5px 6px; }
