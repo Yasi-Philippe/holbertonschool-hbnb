@@ -1,35 +1,73 @@
-# HBnB - Part 3 (Database & Authentication)
+# HBnB - Full Stack Web Application
 
 ## 📌 Overview
 
-In this phase of the HBnB project, we extend Part 2 by integrating a **relational database (SQL)**, implementing **JWT-based authentication**, and adding **role-based access control** (admin checks). The project maintains the modular 3-layer architecture while replacing in-memory storage with persistent database storage and adding security features.
+HBnB is a full-stack web application for discovering and reviewing unique places to stay. It combines a **Flask REST API** backend — backed by a relational database, JWT authentication, and role-based access control — with a **multi-page frontend** (HTML, CSS, Vanilla JavaScript) that covers the complete user journey: browsing places, viewing details, submitting reviews, and managing listings.
 
-### Key Additions in Part 3:
-- **Database Integration**: SQL-based repository with SQLAlchemy ORM relationships
-- **JWT Authentication**: Secure login endpoint with token-based access
+---
+
+## Preview
+
+> A glimpse of the HBnB web experience — browse curated stays, discover featured properties, and explore the full catalogue.
+
+### Landing Page
+
+![Landing page — hero section with navigation and call-to-action](../front_end/README%20main%20page.jpg)
+
+*The entry point of the application: a full-width hero carousel, top navigation with login access, and quick-access buttons to jump to recommended or all available places.*
+
+---
+
+### Featured Places
+
+![Featured places section](../front_end/README%20Featured.png)
+
+*A curated selection of standout properties highlighted for the user, presented in an elegant card layout with key details at a glance.*
+
+---
+
+### All Places
+
+![All places catalogue](../front_end/README%20all%20places.png)
+
+*The complete catalogue — every listed property rendered in a responsive grid, ready to browse, filter, and explore.*
+
+---
+
+### Core Features:
+- **Place Browsing**: Landing page with hero carousel, featured section, and full catalogue
+- **Place Detail**: Dedicated page per listing with amenities, reviews, and imagery
+- **Authentication Flow**: Login page with JWT cookie storage; session-aware navigation
+- **Review Submission**: Authenticated users can submit star-rated reviews
+- **Place Creation**: Authenticated users can list a new property
+- **Admin Panel**: Admin management interface for privileged operations
+- **Database Integration**: SQL-based persistence with SQLAlchemy ORM
+- **JWT Authentication**: Secure login with token-based access
 - **Role-Based Access**: Admin checks for protected operations
-- **Place Deletion**: DELETE endpoint for places with authorization
-- **Database Relations**: Proper foreign key relationships between entities
+- **Place & Review Deletion**: DELETE endpoints with owner/admin authorization
 
 ## ✅ Objectives
 
+- **Build a Dynamic Frontend:**
+  Create a multi-page application that consumes the REST API, handles JWT sessions via cookies, and provides a polished user experience for browsing, reviewing, and managing places.
+
 - **Integrate a Relational Database:**
-  Replace in-memory repository with SQL database, implement proper relationships between entities, and use the repository pattern for data persistence.
+  Persist all entities in a SQL database using the repository pattern with SQLAlchemy ORM relationships.
 
 - **Implement JWT Authentication:**
-  Create login endpoint that issues JWT tokens, validate credentials using password hashing, and include admin claims in tokens.
+  Issue JWT tokens on login, validate credentials with password hashing, and include admin claims in tokens.
 
 - **Add Authorization & Role Management:**
-  Implement protected endpoints with admin-only access checks for sensitive operations like user and place deletion.
+  Protect sensitive endpoints with admin-only access checks and owner verification.
 
 - **Enhance Business Logic Layer:**
-  Build core classes with database relationships, maintain the **Facade pattern**, and implement proper validation and error handling.
-
-- **Test and Validate Security:**
-  Ensure authentication flows work correctly, validate authorization checks, and test database constraints.
+  Build core models with database relationships, maintain the **Facade pattern**, and implement proper validation and error handling.
 
 ## 🧾 Learning Objectives
 
+- Frontend-Backend Integration via REST API
+- DOM Manipulation and Dynamic Rendering with Vanilla JavaScript
+- Session Management with JWT Cookies
 - Relational Database Design and Integration
 - JWT Authentication and Authorization
 - Role-Based Access Control (RBAC)
@@ -42,74 +80,79 @@ In this phase of the HBnB project, we extend Part 2 by integrating a **relationa
 ## 📁 Project Structure
 
 ```
-hbnb/
-├── app/
-│   ├── __init__.py
-│   ├── api/
-│   │   ├── __init__.py
-│   │   └── v1/
-│   │       ├── __init__.py
-│   │       ├── users.py
-│   │       ├── places.py
-│   │       ├── reviews.py
-│   │       ├── amenities.py
-│   │       ├── auth.py              # NEW: JWT Login endpoint
-│   │       └── protected.py         # NEW: Protected endpoints for admin
-│   ├── models/
-│   │   ├── __init__.py
-│   │   ├── base_model.py
-│   │   ├── user.py                 # Updated: password hashing & is_admin
-│   │   ├── place.py
-│   │   ├── review.py
-│   │   └── amenity.py
-│   ├── services/
-│   │   ├── __init__.py
-│   │   └── facade.py               # Updated: database operations
-│   └── persistence/
-│       ├── __init__.py
-│       ├── repository.py           # Updated: SQL-based repository
-│       └── repositories/           # NEW: Specialized repositories
-│           ├── __init__.py
-│           ├── user_repository.py
-│           ├── place_repository.py
-│           ├── review_repository.py
-│           └── amenity_repository.py
-├── instance/
-│   ├── drop_and_create_tables.sql   # NEW: Database schema
-│   └── insert_data.sql              # NEW: Sample data
-├── tests/
-│   ├── __init__.py
-│   ├── test_user.py
-│   ├── test_amenity.py
-│   ├── test_place.py
-│   └── test_review.py
-├── run.py
-├── config.py                       # Updated: database configuration
-├── requirements.txt                # Updated: added SQLAlchemy, Flask-JWT
-└── README.md
+holbertonschool-hbnb/part4/
+├── front_end/                          # Static frontend (served separately)
+│   ├── index.html                      # Landing page: hero, featured, all places
+│   ├── login.html                      # Login form
+│   ├── place.html                      # Place detail with amenities & reviews
+│   ├── create_place.html               # Create a new listing (auth required)
+│   ├── add_review.html                 # Submit a review (auth required)
+│   ├── admin.html                      # Admin management panel
+│   ├── scripts.js                      # All frontend JS (API calls, rendering)
+│   └── styles.css                      # Application stylesheet
+└── hbnb/                               # Flask backend
+    ├── app/
+    │   ├── __init__.py                 # App factory: Flask, SQLAlchemy, JWT, CORS
+    │   ├── api/
+    │   │   └── v1/
+    │   │       ├── users.py            # User endpoints
+    │   │       ├── places.py           # Place endpoints
+    │   │       ├── reviews.py          # Review endpoints
+    │   │       ├── amenities.py        # Amenity endpoints
+    │   │       ├── auth.py             # JWT login endpoint
+    │   │       └── protected.py        # Admin-only protected endpoint
+    │   ├── models/
+    │   │   ├── base_model.py           # Abstract base with validation helpers
+    │   │   ├── user.py                 # User: password hashing, is_admin
+    │   │   ├── place.py                # Place: relationships, to_dict()
+    │   │   ├── review.py               # Review: rating, text, FK refs
+    │   │   └── amenity.py              # Amenity: name
+    │   ├── services/
+    │   │   ├── facade.py               # HBnBFacade: central business logic hub
+    │   │   └── repositories/           # Specialized repositories
+    │   │       ├── user_repository.py
+    │   │       ├── place_repository.py
+    │   │       ├── review_repository.py
+    │   │       └── amenity_repository.py
+    │   └── persistence/
+    │       └── repository.py           # Abstract + SQLAlchemyRepository base
+    ├── instance/
+    │   ├── drop_and_create_tables.sql  # Database schema
+    │   └── insert_data.sql             # Sample seed data
+    ├── run.py                          # Entry point
+    ├── config.py                       # DevelopmentConfig (SQLite)
+    ├── seed_data.py                    # Populate DB with sample places & users
+    ├── migrate_to_english.py           # One-time script: translate FR→EN place data
+    └── requirements.txt
 ```
 
-### Key Files - Part 3 Additions
+### Key Files
 
-| File                                    | Role                                                                                 |
-| --------------------------------------- | ------------------------------------------------------------------------------------ |
-| `app/api/v1/auth.py`                    | JWT login endpoint with credential validation                                       |
-| `app/api/v1/protected.py`               | Protected endpoints with admin-only access checks                                    |
-| `app/persistence/repositories/`         | Specialized repositories for each entity with database queries                       |
-| `app/models/user.py`                    | Updated with password hashing, `is_admin` flag, and `verify_password()` method       |
-| `instance/drop_and_create_tables.sql`   | Database schema with foreign key relationships                                       |
-| `config.py`                             | Database connection configuration                                                    |
+| File                                  | Role                                                                           |
+| ------------------------------------- | ------------------------------------------------------------------------------ |
+| `front_end/scripts.js`                | All frontend logic: fetch calls, rendering, JWT cookie handling                |
+| `front_end/index.html`                | Landing page with hero carousel, featured places, and full catalogue           |
+| `hbnb/app/api/v1/auth.py`             | JWT login endpoint — issues tokens on valid credentials                        |
+| `hbnb/app/api/v1/protected.py`        | Admin-only endpoint example                                                    |
+| `hbnb/app/services/facade.py`         | HBnBFacade: single entry point for all business logic                          |
+| `hbnb/app/services/repositories/`    | Specialized repositories for each entity                                       |
+| `hbnb/app/models/user.py`             | User model with `hash_password()`, `verify_password()`, and `is_admin` flag    |
+| `hbnb/app/persistence/repository.py`  | Generic `SQLAlchemyRepository` base class                                      |
+| `hbnb/instance/drop_and_create_tables.sql` | Database schema with foreign key relationships                            |
+| `hbnb/config.py`                      | App configuration (SQLite URI, secret keys)                                    |
+| `hbnb/seed_data.py`                   | Populates the database with sample users, places, amenities, and reviews       |
 
 ## ⚒️ Architecture
 
-The application follows a **4-layer architecture** (Part 3):
+The application follows a **4-layer architecture**:
 
-| Layer              | Description                                                              | Location                        |
-| ------------------ | ------------------------------------------------------------------------ | ------------------------------- |
-| **Presentation**   | Flask-RESTX API endpoints (CRUD + Auth)                                  | `app/api/v1/`                   |
-| **Business Logic** | Models (`User`, `Place`, `Review`, `Amenity`) + Facade pattern           | `app/models/` + `app/services/` |
-| **Persistence**    | SQL-based repositories with SQLAlchemy ORM relationships                  | `app/persistence/`              |
-| **Database**       | Relational database (SQL) with foreign key relationships                  | `instance/`                     |
+| Layer              | Description                                                              | Location                                   |
+| ------------------ | ------------------------------------------------------------------------ | ------------------------------------------ |
+| **Frontend**       | Static HTML/CSS/JS — consumes the API via `fetch`                        | `front_end/`                               |
+| **Presentation**   | Flask-RESTX API endpoints (CRUD + Auth)                                  | `hbnb/app/api/v1/`                         |
+| **Business Logic** | Models (`User`, `Place`, `Review`, `Amenity`) + Facade pattern           | `hbnb/app/models/` + `hbnb/app/services/`  |
+| **Persistence**    | SQL-based repositories with SQLAlchemy ORM                               | `hbnb/app/services/repositories/`          |
+| **Database**       | Relational database (SQLite) with foreign key relationships               | `hbnb/instance/`                           |
 
 ### Facade Pattern & Repositories
 
@@ -139,7 +182,7 @@ Each repository handles:
 
 ```bash
 git clone https://github.com/<your-username>/holbertonschool-hbnb.git
-cd holbertonschool-hbnb/part3/hbnb
+cd holbertonschool-hbnb/part4/hbnb
 ```
 
 2. Create a virtual environment (recommended):
@@ -155,23 +198,42 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 🔎 Usage
-
-1. Run the application:
+4. (Optional) Seed the database with sample data:
 
 ```bash
+python seed_data.py
+```
+
+## 🔎 Usage
+
+The application has two processes that must run simultaneously — the backend API and a static file server for the frontend.
+
+### 1. Start the backend
+
+```bash
+cd holbertonschool-hbnb/part4/hbnb
 python run.py
 ```
 
-2. Open a browser and visit: http://127.0.0.1:5000
+The API will be available at `http://127.0.0.1:5000`.  
+Swagger documentation: `http://127.0.0.1:5000/api/v1/`
 
-3. Swagger documentation is accessible at: http://127.0.0.1:5000/api/v1/
+### 2. Serve the frontend
 
-## � Authentication & Authorization
+Open a second terminal:
+
+```bash
+cd holbertonschool-hbnb/part4/front_end
+python3 -m http.server 8080
+```
+
+Then open `http://localhost:8080/index.html` in your browser.
+
+## 🔐 Authentication & Authorization
 
 ### JWT Login
 
-Part 3 introduces JWT-based authentication for secure API access.
+HBnB uses JWT-based authentication for secure API access.
 
 | Method | Endpoint            | Description                  | Status Codes |
 | ------ | ------------------- | ---------------------------- | ------------ |
@@ -207,7 +269,7 @@ curl -X DELETE http://127.0.0.1:5000/api/v1/places/<place_id> \
 
 ### Admin Access
 
-Certain endpoints (like place and user deletion) require `is_admin` claim in the JWT token. Only users with `is_admin=true` can access these operations.
+Certain endpoints (like creating users, managing amenities, and deleting places) require the `is_admin` claim in the JWT token. Only users with `is_admin=true` can access these operations.
 
 ---
 
@@ -219,13 +281,12 @@ Certain endpoints (like place and user deletion) require `is_admin` claim in the
 
 ### Users
 
-| Method | Endpoint                  | Description           | Status Codes    |
-| ------ | ------------------------- | --------------------- | --------------- |
-| POST   | `/api/v1/users/`          | Register a new user   | 201, 400        |
-| GET    | `/api/v1/users/`          | Retrieve all users    | 200             |
-| GET    | `/api/v1/users/<user_id>` | Retrieve a user by ID | 200, 404        |
-| PUT    | `/api/v1/users/<user_id>` | Update a user         | 200, 400, 404   |
-| DELETE | `/api/v1/users/<user_id>` | 🔒 Delete a user (admin only) | 200, 403, 404   |
+| Method | Endpoint                  | Description                    | Status Codes  |
+| ------ | ------------------------- | ------------------------------ | ------------- |
+| POST   | `/api/v1/users/`          | 🔒 Create a new user (admin only) | 201, 400      |
+| GET    | `/api/v1/users/`          | Retrieve all users             | 200           |
+| GET    | `/api/v1/users/<user_id>` | Retrieve a user by ID          | 200, 404      |
+| PUT    | `/api/v1/users/<user_id>` | 🔒 Update a user               | 200, 400, 404 |
 
 **Create a User**
 
@@ -378,9 +439,7 @@ Response (201):
 | GET    | `/api/v1/reviews/`            | Retrieve all reviews    | 200           |
 | GET    | `/api/v1/reviews/<review_id>` | Retrieve a review by ID | 200, 404      |
 | PUT    | `/api/v1/reviews/<review_id>` | Update a review         | 200, 400, 404 |
-| DELETE | `/api/v1/reviews/<review_id>` | Delete a review         | 200, 404      |
-
-> ⚠️ DELETE is only implemented for reviews in this part of the project.
+| DELETE | `/api/v1/reviews/<review_id>` | 🔒 Delete a review (owner/admin only) | 200, 403, 404 |
 
 **Create a Review**
 
@@ -436,52 +495,21 @@ Response (200):
 
 ---
 
-## 🧪 Unit Tests
+## 🧪 Testing
 
-The project includes a comprehensive test suite located in the `tests/` directory. Tests cover all API endpoints for users, amenities, places, and reviews.
+The API can be exercised manually via cURL or the built-in Swagger UI at `http://127.0.0.1:5000/api/v1/`. All endpoints, authentication flows, and authorization rules are fully accessible there.
 
-### Running the Tests
+For automated coverage, the recommended areas to target are:
 
-```bash
-python3 -m unittest discover -s tests -v
-```
-
-> 📝 **Note**: Tests in Part 3 use in-memory repositories for isolation. Database integration tests are **not yet implemented**.
-
-### Test Coverage
-
-| Module              | Status | Description                                                    |
-| ------------------- | ------ | -------------------------------------------------------------- |
-| User CRUD + Validation   | ✅ Complete | Create, read, update operations with input validation           |
-| Amenity CRUD         | ✅ Complete | Create, read, update operations                                |
-| Place CRUD + Validation  | ✅ Complete | Create, read, update + boundary testing for coordinates        |
-| Review CRUD + Delete     | ✅ Complete | Full lifecycle testing including delete operations             |
-| **Authentication**   | ❌ Pending  | JWT token generation, login flow validation                    |
-| **Authorization**    | ❌ Pending  | Admin checks for delete operations, role-based access          |
-| **Database Layer**   | ❌ Pending  | SQLAlchemy ORM relationships, persistence verification         |
-| **Error Handling**   | ⚠️ Partial  | Coverage for validation errors; missing HTTP exception tests   |
-
-### Future Test Enhancements
-
-- ✅ Implement authentication tests:
-  - Successful login with valid credentials
-  - Failed login with invalid credentials
-  - JWT token validation and expiration
-  
-- ✅ Implement authorization tests:
-  - Admin-only deletion attempts (403 Forbidden)
-  - Owner-only place deletion verification
-  - Token refresh and revocation
-  
-- ✅ Implement database integration tests:
-  - Verify persistent storage
-  - Test foreign key relationships
-  - Test cascade delete operations
-  
-- ✅ Implement comprehensive error handling tests:
-  - Database connection failures
-  - Constraint violations
-  - Transaction rollback scenarios
+| Area                     | Description                                                           |
+| ------------------------ | --------------------------------------------------------------------- |
+| User CRUD + Validation   | Create, read, update with input validation                            |
+| Amenity CRUD             | Create, read, update operations                                       |
+| Place CRUD + Validation  | Create, read, update + boundary testing for coordinates               |
+| Review CRUD              | Full lifecycle including delete with authorization checks             |
+| Authentication           | Login with valid/invalid credentials, JWT validation and expiration   |
+| Authorization            | Admin-only operations, owner-only modifications (403 enforcement)     |
+| Database Layer           | Relationship integrity, cascade deletes, persistence verification     |
 
 ---
 
@@ -585,7 +613,7 @@ erDiagram
 
 ## 📘 Resources
 
-### Part 3 Core Documentation
+### Core Documentation
 - [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/) — ORM integration for Flask
 - [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/) — JWT authentication for Flask
 - [SQLAlchemy Relationships](https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html) — Database relationship patterns
